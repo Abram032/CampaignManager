@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace CampaignManager.Models
 {
-    public class Campaign : Entity
+    public class Mission : CampaignEntity
     {
         public string Description { get; set; }
-        public string Currency { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public List<Participant> Participants { get; set; }
-        public bool IsActive { get; set; }
+        public List<int> ItemIds { get; set; }
+        public List<int> LocationIds { get; set; }
+        public List<Objective> Objectives { get; set; }
     }
 }
