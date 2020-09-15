@@ -1,18 +1,17 @@
 using System;
 using System.Collections.Generic;
+using CampaignManager.Models.Templates;
 
 namespace CampaignManager.Models
 {
-    public class Campaign
+    public class Mission
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Currency { get; set; }
+        public string Country { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public List<Participant> Participants { get; set; }
-        public List<int> MissionIds { get; set; }
+        public List<Objective> Objectives { get; set; }
         public bool IsActive { get; set; }
     }
 }
