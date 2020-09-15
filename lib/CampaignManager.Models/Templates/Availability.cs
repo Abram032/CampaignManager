@@ -6,6 +6,6 @@ namespace CampaignManager.Models
     public class Availability
     {
         public int CountryId { get; set; }
-        public List<int> ItemIds { get; set; }
+        public List<int> ObjectIds { get; set; }
     }
 }
