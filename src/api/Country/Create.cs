@@ -8,24 +8,24 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace CampaignManager.Api.Category
+namespace CampaignManager.Api.Country
 {
     public static class Create
     {
-        [FunctionName("CategoryCreate")]
+        [FunctionName("CountryCreate")]
         public static void Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Category")] Models.Category category,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Country")] Models.Country country,
             [CosmosDB(
                 databaseName: "CampaignManager",
-                collectionName: "Categories",
+                collectionName: "Countries",
                 ConnectionStringSetting = "AZURE_COSMOS_DB_CONNECTION_STRING"
             )] out dynamic document,
             ILogger log)
         {
             document = new { 
                 id = Guid.NewGuid(),
-                campaignId = category.CampaignId,
-                name = category.Name
+                campaignId = country.CampaignId,
+                name = country.Name
             };
 
             log.LogInformation("C# HTTP trigger function processed a request.");

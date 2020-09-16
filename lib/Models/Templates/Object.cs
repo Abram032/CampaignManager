@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace CampaignManager.Models.Templates
+namespace CampaignManager.Models
 {
     public class Object : Entity
     {

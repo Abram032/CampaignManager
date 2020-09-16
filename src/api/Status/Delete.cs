@@ -10,26 +10,26 @@ using Newtonsoft.Json;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents;
 
-namespace CampaignManager.Api.Category
+namespace CampaignManager.Api.Status
 {
     public static class Delete
     {
-        [FunctionName("CategoryDelete")]
+        [FunctionName("StatusDelete")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, "delete", 
-                Route = "Category"
+                Route = "Status"
             )] HttpRequest req,
             [CosmosDB(
                 databaseName: "CampaignManager",
-                collectionName: "Categories",
+                collectionName: "Statuses",
                 Id = "{Query.id}",
                 PartitionKey = "{Query.campaignId}",
                 ConnectionStringSetting = "AZURE_COSMOS_DB_CONNECTION_STRING"
             )] Document document,
             [CosmosDB(
                 databaseName: "CampaignManager",
-                collectionName: "Categories",
+                collectionName: "Statuses",
                 ConnectionStringSetting = "AZURE_COSMOS_DB_CONNECTION_STRING"
             )] DocumentClient client,
             ILogger log)

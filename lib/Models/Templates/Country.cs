@@ -1,6 +1,6 @@
 using System;
 
-namespace CampaignManager.Models.Templates
+namespace CampaignManager.Models
 {
     public class Country : Entity
     {

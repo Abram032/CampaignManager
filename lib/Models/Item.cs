@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using CampaignManager.Models.Templates;
 
 namespace CampaignManager.Models
 {

@@ -7,25 +7,27 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Microsoft.Azure.Documents;
+using Microsoft.Azure.Documents.Client;
 
-namespace CampaignManager.Api.Category
+namespace CampaignManager.Api.Status
 {
-    public static class Create
+    public static class Update
     {
-        [FunctionName("CategoryCreate")]
+        [FunctionName("StatusUpdate")]
         public static void Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Category")] Models.Category category,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Status")] Models.Status status,
             [CosmosDB(
                 databaseName: "CampaignManager",
-                collectionName: "Categories",
+                collectionName: "Statuses",
                 ConnectionStringSetting = "AZURE_COSMOS_DB_CONNECTION_STRING"
             )] out dynamic document,
             ILogger log)
         {
             document = new { 
-                id = Guid.NewGuid(),
-                campaignId = category.CampaignId,
-                name = category.Name
+                id = status.Id,
+                campaignId = status.CampaignId,
+                name = status.Name
             };
 
             log.LogInformation("C# HTTP trigger function processed a request.");

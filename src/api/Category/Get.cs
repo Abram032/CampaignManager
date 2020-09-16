@@ -7,16 +7,15 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using CampaignManager.Models.Templates;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents;
 
-namespace CampaignManager.Api.Object
+namespace CampaignManager.Api.Category
 {
     public static class Get
     {
         [FunctionName("CategoryGet")]
-        public static async Task<IActionResult> Run(
+        public static IActionResult Run(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, "get", 
                 Route = "Category"
@@ -27,7 +26,7 @@ namespace CampaignManager.Api.Object
                 Id = "{Query.id}",
                 PartitionKey = "{Query.partitionKey}",
                 ConnectionStringSetting = "AZURE_COSMOS_DB_CONNECTION_STRING"
-            )] Category category,
+            )] Models.Category category,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
