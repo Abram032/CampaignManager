@@ -6,6 +6,7 @@ namespace CampaignManager.Models
     public class Campaign
     {
         public Guid Id { get; set; }
+        public Guid PartitionKey { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Currency { get; set; }

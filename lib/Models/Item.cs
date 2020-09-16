@@ -12,5 +12,6 @@ namespace CampaignManager.Models
         public string Status { get; set; }
         public string Coalition { get; set; }
         public string Country { get; set; }
+        public int Count { get; set; }
     }
 }
