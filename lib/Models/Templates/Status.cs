@@ -2,7 +2,11 @@ using System;
 
 namespace CampaignManager.Models
 {
-    public class Status : Entity
+    public enum Status
     {
+        Unknown,
+        Destroyed,
+        Disabled,
+        Operational
     }
 }

@@ -1,7 +1,12 @@
 ﻿@page "/"
+@using CampaignManager.App.Components;
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
+
+<ObjectForm CampaignId="@Guid.Empty.ToString()" Id="@Guid.NewGuid().ToString()"></ObjectForm>
+
+<LocationForm CampaignId="@Guid.Empty.ToString()" Id="@Guid.NewGuid().ToString()"></LocationForm>

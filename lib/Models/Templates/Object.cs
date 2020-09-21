@@ -5,8 +5,8 @@ namespace CampaignManager.Models
 {
     public class Object : Entity
     {
-        public string Category { get; set; }
-        public string Subcategory { get; set; }
+        public Category Category { get; set; }
+        public Subcategory Subcategory { get; set; }
         public decimal Cost { get; set; }
     }
 }

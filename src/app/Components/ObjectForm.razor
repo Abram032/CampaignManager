@@ -1,0 +1,80 @@
+@using Microsoft.AspNetCore.Components.Forms;
+@using Microsoft.Extensions.Configuration;
+@using Newtonsoft.Json;
+@using CampaignManager.Models;
+
+@inject IConfiguration Configuration
+
+<EditForm Model="@_object" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label for="CampaignId">Campaign Id: </label>
+        <InputText class="form-control" @bind-Value="@CampaignId" disabled></InputText>
+    </div>
+    <div class="form-group">
+        <label for="Id">Id: </label>
+        <InputText class="form-control" @bind-Value="@Id" disabled></InputText>
+    </div>
+    <div class="form-group">
+        <label for="@_object.Name">Name: </label>
+        <InputText class="form-control" @bind-Value="@_object.Name"></InputText>
+    </div>
+    <div class="form-group">
+        <label for="@_object.Category">Category: </label>
+        <InputSelect class="form-control" @bind-Value="_object.Category">
+            @foreach (var category in Enum.GetValues(typeof(Category)))
+            {
+                <option value="@category">@category.ToString()</option>
+            }
+        </InputSelect>
+    </div>
+    <div class="form-group">
+        <label for="@_object.Subcategory">Subcategory: </label>
+        <InputSelect class="form-control" @bind-Value="_object.Subcategory">
+            @foreach (var subcategory in Enum.GetValues(typeof(Subcategory)))
+            {
+                <option value="@subcategory">@subcategory.ToString()</option>
+            }
+        </InputSelect>
+    </div>
+    <div class="form-group">
+        <label for="@_object.Cost">Cost: </label>
+        <InputNumber class="form-control" @bind-Value="_object.Cost" />
+    </div>
+    <button class="btn btn-lg btn-success" type="submit"><span class="fas fa-lg fa-save mr-2"></span>Save</button>
+</EditForm>
+
+
+@code
+{ 
+    [Parameter]
+    public string CampaignId { get; set; } = Guid.Empty.ToString();
+    [Parameter]
+    public string Id { get; set; } = Guid.Empty.ToString();
+
+
+    private Models.Object _object = new Models.Object();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var url = $"{Configuration["ApiUrl"]}/Object?campaignId={CampaignId}&id={Id}";
+        var client = new HttpClient();
+        var response = await client.GetAsync(url);
+        if (response.IsSuccessStatusCode)
+        {
+            _object = JsonConvert.DeserializeObject<Models.Object>(await response.Content.ReadAsStringAsync());
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        var url = $"{Configuration["ApiUrl"]}/Object?campaignId={CampaignId}&id={Id}";
+        var client = new HttpClient();
+        if (Id.Equals(Guid.Empty))
+        {
+            await client.PostAsJsonAsync<Models.Object>(url, _object);
+        }
+    }
+}
+    

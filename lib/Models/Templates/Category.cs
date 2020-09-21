@@ -2,7 +2,14 @@ using System;
 
 namespace CampaignManager.Models
 {
-    public class Category : Entity
+    public enum Category
     {
+        Unknown,
+        Aircraft,
+        Vehicle,
+        Ship,
+        AirDefence,
+        Armament,
+        Building
     }
 }

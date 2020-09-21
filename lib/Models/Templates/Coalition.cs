@@ -2,7 +2,12 @@ using System;
 
 namespace CampaignManager.Models
 {
-    public class Coalition : Entity
+    public enum Coalition
     {
+        Unknown,
+        Civilian,
+        White,
+        Blue,
+        Red
     }
 }

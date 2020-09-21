@@ -33,9 +33,6 @@ namespace CampaignManager.Api.Location
                 coalition = location.Coalition,
                 coordinates = location.Coordinates,
                 services = location.Services,
-                fuelQuantity = location.FuelQuantity,
-                fuelCost = location.FuelCost,
-                isMilitary = location.IsMilitary,
                 items = location.Items
             };
 
