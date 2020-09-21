@@ -8,25 +8,72 @@
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
+            <NavLink class="nav-link" @onclick="() => expandCampaignsMenu = !expandCampaignsMenu">
+                <span class="fas fa-lg fa-map-marked-alt mr-2" aria-hidden="true"></span> Campaigns
             </NavLink>
+            @if(expandCampaignsMenu)
+            {
+                <ul class="nav flex-column">
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="campaigns">
+                            <span class="fas fa-lg fa-globe-europe mr-2" aria-hidden="true"></span> Campaign1
+                        </NavLink>
+                    </li>
+                </ul>
+            }
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
+            <NavLink class="nav-link" @onclick="() => expandTemplatesMenu = !expandTemplatesMenu"> 
+                <span class="fas fa-lg fa-pencil-ruler mr-2" aria-hidden="true"></span> Templates
             </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
+            @if(expandTemplatesMenu)
+            {
+                <ul class="nav flex-column">
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="templates/categories">
+                            <span class="fas fa-lg fa-archive mr-2" aria-hidden="true"></span> Categories
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="templates/coalitions">
+                            <span class="fas fa-lg fa-handshake mr-2" aria-hidden="true"></span> Coalitions
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="templates/countries">
+                            <span class="fas fa-lg fa-flag mr-2" aria-hidden="true"></span> Countries
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="templates/objects">
+                            <span class="fas fa-lg fa-boxes mr-2" aria-hidden="true"></span> Objects
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="templates/services">
+                            <span class="fas fa-lg fa-tools mr-2" aria-hidden="true"></span> Services
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="templates/statuses">
+                            <span class="fas fa-lg fa-info-circle mr-2" aria-hidden="true"></span> Statuses
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="templates/subcategories">
+                            <span class="fas fa-lg fa-tag mr-2" aria-hidden="true"></span> Subcategories
+                        </NavLink>
+                    </li>
+                </ul>
+            }
         </li>
     </ul>
 </div>
 
 @code {
     private bool collapseNavMenu = true;
+    private bool expandTemplatesMenu = true;
+    private bool expandCampaignsMenu = true;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
