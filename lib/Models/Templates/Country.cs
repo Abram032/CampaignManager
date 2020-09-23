@@ -4,6 +4,8 @@ namespace CampaignManager.Models
 {
     public enum Country
     {
+        Unknown,
+        NotApplicable,
         Afghanistan,
         Albania,
         Algeria,

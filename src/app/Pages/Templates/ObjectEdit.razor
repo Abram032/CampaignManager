@@ -1,0 +1,12 @@
+﻿@page "/templates/objects/{Id:guid}"
+@using CampaignManager.App.Components.Forms
+
+<h1>Object template</h1>
+
+<ObjectForm CampaignId="@Guid.Empty.ToString()" Id="@Id.ToString()"></ObjectForm>
+
+@code 
+{
+    [Parameter]
+    public Guid Id { get; set; }
+}

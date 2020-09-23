@@ -1,0 +1,66 @@
+﻿@page "/templates/locations"
+@using CampaignManager.App.Components.Lists
+@using CampaignManager.Models
+
+
+<h1>Template objects</h1>
+
+<LocationList Locations="@locations"></LocationList>
+
+@code
+{ 
+    private List<Location> locations = new List<Location>
+    {
+        new Location()
+        {
+            Name = "Test 1",
+            Coordinates = new Coordinates
+            {
+                Latitude = 52.348756,
+                Longitude = 56.238745
+            },
+            Coalition = Coalition.Civilian,
+            Country = Country.Syria,
+            Description = "test descriptiuon",
+            Services = new List<Service>
+            {
+                Service.Rearm, Service.Refuel, Service.Repair
+            },
+            Status = Status.Operational,
+            Items = new List<Item>
+            {
+                new Item(),
+                new Item(),
+                new Item(),
+                new Item(),
+                new Item(),
+                new Item(),
+                new Item()
+            }
+        },
+        new Location()
+        {
+            Name = "Test 2",
+            Coordinates = new Coordinates
+            {
+                Latitude = 55.348756,
+                Longitude = 57.238745
+            },
+            Coalition = Coalition.Red,
+            Country = Country.Syria,
+            Description = "test descriptiuon",
+            Services = new List<Service>
+            {
+                Service.Refuel
+            },
+            Status = Status.Disabled,
+            Items = new List<Item>
+            {
+                new Item(),
+                new Item(),
+                new Item(),
+                new Item()
+            }
+        },
+    };
+}

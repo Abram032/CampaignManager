@@ -1,0 +1,290 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.Extensions.Configuration
+@using CampaignManager.Models
+
+@inject IConfiguration Configuration
+
+<EditForm Model="@location" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label for="CampaignId">Campaign Id: </label>
+        <InputText class="form-control" @bind-Value="@CampaignId" disabled></InputText>
+    </div>
+    <div class="form-group">
+        <label for="Id">Id: </label>
+        <InputText class="form-control" @bind-Value="@Id" disabled></InputText>
+    </div>
+    <div class="form-group">
+        <label for="@location.Name">Name: </label>
+        <InputText class="form-control" @bind-Value="@location.Name"></InputText>
+    </div>
+    <div class="form-group">
+        <label for="@location.Description">Description: </label>
+        <InputTextArea class="form-control" @bind-Value="@location.Description"></InputTextArea>
+    </div>
+    <div class="form-group">
+        <label for="@location.Coordinates">Coordinates: </label>
+        <div class="form-group ml-5">
+            <label for="@location.Coordinates.Latitude">Latitude: </label>
+            <InputNumber class="form-control" @bind-Value="@location.Coordinates.Latitude"></InputNumber>
+        </div>
+        <div class="form-group ml-5">
+            <label for="@location.Coordinates.Longitude">Longitude: </label>
+            <InputNumber class="form-control" @bind-Value="@location.Coordinates.Longitude"></InputNumber>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="@location.Country">Country: </label>
+        <InputSelect class="form-control" @bind-Value="location.Country">
+            @foreach (var country in Enum.GetValues(typeof(Country)))
+            {
+                <option value="@country">@country.ToString()</option>
+            }
+        </InputSelect>
+    </div>
+    <div class="form-group">
+        <label for="@location.Coalition">Coalition: </label>
+        <InputSelect class="form-control" @bind-Value="location.Coalition">
+            @foreach (var coalition in Enum.GetValues(typeof(Coalition)))
+            {
+                <option value="@coalition">@coalition.ToString()</option>
+            }
+        </InputSelect>
+    </div>
+    <div class="form-group">
+        <label for="@location.Status">Status: </label>
+        <InputSelect class="form-control" @bind-Value="location.Status">
+            @foreach (var status in Enum.GetValues(typeof(Status)))
+            {
+                <option value="@status">@status.ToString()</option>
+            }
+        </InputSelect>
+    </div>
+    <div class="form-group">
+        <label for="@location.Services">Services: </label>
+        @foreach (Service service in Enum.GetValues(typeof(Service)))
+        {
+            bool Checked = false;
+            if (location.Services.Contains(service))
+            {
+                Checked = true;
+            }
+            <div class="form-group ml-5">
+                <input type="checkbox" class="form-check-input" checked="@Checked" @onchange="eventArgs => { ServiceCheckboxClicked(service, eventArgs.Value); }" />
+                <label class="form-check-label">@service.ToString()</label>
+            </div>
+        }
+    </div>
+    <div class="form-group">
+        <label for="@location.Items">Items: </label>
+        <div class="form-group">
+            <button class="btn btn-success" type="button" @onclick="() => location.Items.Add(new Item())"><span class="fas fa-plus mr-2"></span>Add</button>
+        </div>
+        <div class="form-group">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Use Template</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Subcategory</th>
+                        <th scope="col">Country</th>
+                        <th scope="col">Coalition</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Count</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < location.Items.Count; i++)
+                    {
+                        int index = i;
+                        <tr>
+                            <th scope="row">@(index + 1)</th>
+                            <td>
+                                <InputCheckbox class="form-check-input" ValueExpression="@(() => location.Items[index].UsesTemplate)" Value="@location.Items[index].UsesTemplate" ValueChanged="@((bool value) => OnUseTemplateUpdate(value, location.Items[index]))" />
+                            </td>
+                            <td>
+                                @if (location.Items[index].UsesTemplate)
+                                {
+                                    <InputSelect class="form-control" ValueExpression="@(() => location.Items[index].Name)" Value="@location.Items[index].Name" ValueChanged="@((string value) => OnNameUpdate(value, location.Items[index]))">
+                                        <option value="">Choose item...</option>
+                                        @foreach (var name in objects.Select(p => p.Name))
+                                        {
+                                            <option value="@name">@name</option>
+                                        }
+                                    </InputSelect>
+                                }
+                                else
+                                {
+                                    <InputText class="form-control" @bind-Value="@location.Items[index].Name"></InputText>
+                                }
+                            </td>
+                            <td>
+                                <InputSelect class="form-control" ValueExpression="@(() => location.Items[index].Category)" Value="@location.Items[index].Category" ValueChanged="@((Category value) => OnCategoryUpdate(value, location.Items[index]))" disabled="@location.Items[index].UsesTemplate">
+                                    @foreach (var category in Enum.GetValues(typeof(Category)))
+                                    {
+                                        <option value="@category">@category.ToString()</option>
+                                    }
+                                </InputSelect>
+                            </td>
+                            <td>
+                                <InputSelect class="form-control" @bind-Value="location.Items[index].Subcategory" disabled="@location.Items[index].UsesTemplate">
+                                    @foreach (var subcategory in Enum.GetValues(typeof(Subcategory)))
+                                        {
+                                        <option value="@subcategory">@subcategory.ToString()</option>
+                                        }
+                                </InputSelect>
+                            </td>
+                            <td>
+                                <InputSelect class="form-control" @bind-Value="location.Items[index].Country" disabled="@(location.Items[index].Category == Category.Armament)">
+                                    @foreach (var country in Enum.GetValues(typeof(Country)))
+                                        {
+                                        <option value="@country">@country.ToString()</option>
+                                        }
+                                </InputSelect>
+                            </td>
+                            <td>
+                                <InputSelect class="form-control" @bind-Value="location.Items[index].Coalition" disabled="@(location.Items[index].Category == Category.Armament)">
+                                    @foreach (var coalition in Enum.GetValues(typeof(Coalition)))
+                                        {
+                                        <option value="@coalition">@coalition.ToString()</option>
+                                        }
+                                </InputSelect>
+                            </td>
+                            <td>
+                                <InputSelect class="form-control" @bind-Value="location.Items[index].Status" disabled="@(location.Items[index].Category == Category.Armament)">
+                                    @foreach (var status in Enum.GetValues(typeof(Status)))
+                                        {
+                                        <option value="@status">@status.ToString()</option>
+                                        }
+                                </InputSelect>
+                            </td>
+                            <td>
+                                <InputNumber class="form-control" @bind-Value="location.Items[index].Count" />
+                            </td>
+                            <td>
+                                <button class="btn btn-danger" type="button" @onclick="() => location.Items.Remove(location.Items[index])">
+                                    <span class="fas fa-trash"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <button class="btn btn-success" type="submit"><span class="fas fa-save mr-2"></span>Save</button>
+</EditForm>
+
+
+@code
+{
+    [Parameter]
+    public string CampaignId { get; set; } = Guid.Empty.ToString();
+    [Parameter]
+    public string Id { get; set; } = Guid.Empty.ToString();
+
+    private List<Models.Object> objects = new List<Models.Object>
+{
+        new Models.Object
+        {
+            Name = "F-16C bl.50",
+            CampaignId = Guid.Empty,
+            Category = Category.Airplane,
+            Subcategory = Subcategory.Unknown,
+            Id = Guid.NewGuid()
+        },
+        new Models.Object
+        {
+            Name = "F/A-18C",
+            CampaignId = Guid.Empty,
+            Category = Category.Airplane,
+            Subcategory = Subcategory.Unknown,
+            Id = Guid.NewGuid()
+        }
+    };
+
+
+    private Location location = new Location
+    {
+        Coordinates = new Coordinates(),
+        Services = new List<Service>(),
+        Items = new List<Item>()
+    };
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        //var url = $"{Configuration["ApiUrl"]}/Location?campaignId={CampaignId}&id={Id}";
+        //var client = new HttpClient();
+        //var response = await client.GetAsync(url);
+        //if (response.IsSuccessStatusCode)
+        //{
+        //    location = JsonConvert.DeserializeObject<Location>(await response.Content.ReadAsStringAsync());
+        //}
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        //var url = $"{Configuration["ApiUrl"]}/Object?campaignId={CampaignId}&id={Id}";
+        //var client = new HttpClient();
+        //if (Id.Equals(Guid.Empty))
+        //{
+        //    await client.PostAsJsonAsync<Location>(url, location);
+        //}
+    }
+
+    private void ServiceCheckboxClicked(Service service, object aChecked)
+    {
+        if ((bool)aChecked)
+        {
+            if (!location.Services.Contains(service))
+            {
+                location.Services.Add(service);
+            }
+        }
+        else
+        {
+            if (location.Services.Contains(service))
+            {
+                location.Services.Remove(service);
+            }
+        }
+        StateHasChanged();
+    }
+
+    private void OnNameUpdate(string value, Item item)
+    {
+        item.Name = value;
+
+        var _object = objects.FirstOrDefault(o => o.Name == item.Name);
+        item.Category = _object.Category;
+        item.Subcategory = _object.Subcategory;
+    }
+
+    private void OnCategoryUpdate(Category value, Item item)
+    {
+        item.Category = value;
+        if (Category.Armament == value)
+        {
+            item.Status = Status.Operational;
+            item.Coalition = Coalition.NotApplicable;
+            item.Country = Country.NotApplicable;
+        }
+    }
+
+    private void OnUseTemplateUpdate(bool value, Item item)
+    {
+        item.UsesTemplate = value;
+        item.Name = string.Empty;
+        item.Category = default;
+        item.Coalition = default;
+        item.Country = default;
+        item.Subcategory = default;
+        item.Status = default;
+        item.Count = default;
+    }
+}

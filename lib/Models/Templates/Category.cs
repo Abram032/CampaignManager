@@ -5,11 +5,13 @@ namespace CampaignManager.Models
     public enum Category
     {
         Unknown,
-        Aircraft,
+        Airplane,
+        Helicopters,
         Vehicle,
         Ship,
         AirDefence,
         Armament,
-        Building
+        Static,
+        Fuel
     }
 }

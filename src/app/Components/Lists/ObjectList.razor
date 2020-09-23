@@ -1,0 +1,42 @@
+﻿
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Subcategory</th>
+            <th>Cost</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Objects.Count; i++)
+        {
+            int index = i;
+            <tr>
+                <th scope="row">@(index + 1)</th>
+                <td>@Objects[index].Name</td>
+                <td>@Objects[index].Category</td>
+                <td>@Objects[index].Subcategory</td>
+                <td>@Objects[index].Cost</td>
+                <td>
+                    <a class="btn btn-warning" type="button" href="/templates/objects/@Guid.NewGuid()">
+                        <span class="fas fa-edit"></span>
+                    </a>
+                </td>
+                <td>
+                    <button class="btn btn-danger" type="button">
+                        <span class="fas fa-trash"></span>
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public List<Models.Object> Objects { get; set; }
+}
