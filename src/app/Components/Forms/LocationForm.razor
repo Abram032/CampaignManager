@@ -192,18 +192,18 @@
         new Models.Object
         {
             Name = "F-16C bl.50",
-            CampaignId = Guid.Empty,
+            CampaignId = Guid.Empty.ToString(),
             Category = Category.Airplane,
             Subcategory = Subcategory.Unknown,
-            Id = Guid.NewGuid()
+            Id = Guid.NewGuid().ToString()
         },
         new Models.Object
         {
             Name = "F/A-18C",
-            CampaignId = Guid.Empty,
+            CampaignId = Guid.Empty.ToString(),
             Category = Category.Airplane,
             Subcategory = Subcategory.Unknown,
-            Id = Guid.NewGuid()
+            Id = Guid.NewGuid().ToString()
         }
     };
 
@@ -218,7 +218,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        //var url = $"{Configuration["ApiUrl"]}/Location?campaignId={CampaignId}&id={Id}";
+        var url = $"{Configuration["ApiUrl"]}/Location?campaignId={CampaignId}&id={Id}";
+        Console.WriteLine(url);
         //var client = new HttpClient();
         //var response = await client.GetAsync(url);
         //if (response.IsSuccessStatusCode)

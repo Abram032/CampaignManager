@@ -27,7 +27,10 @@ namespace CampaignManager.Api.Object
             document = new { 
                 id = @object.Id,
                 campaignId = @object.CampaignId,
-                name = @object.Name
+                name = @object.Name,
+                category = @object.Category,
+                subcategory = @object.Subcategory,
+                cost = @object.Cost
             };
 
             log.LogInformation("C# HTTP trigger function processed a request.");

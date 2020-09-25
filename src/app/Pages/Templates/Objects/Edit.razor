@@ -1,0 +1,34 @@
+﻿@page "/templates/objects/edit/{Id:guid}"
+@using Microsoft.Extensions.Configuration
+@using CampaignManager.App.Components.Forms
+
+@inject IConfiguration Configuration
+@inject HttpClient http
+@inject IJSRuntime js
+
+<h1>Object template - Edit</h1>
+
+<ObjectForm Object="@_object" OnValidSubmit="@OnValidSubmit"></ObjectForm>
+
+@code
+{   
+    [Parameter]
+    public Guid Id { get; set; }
+    [Parameter]
+    public Guid CampaignId { get; set; }
+
+    private Models.Object _object = new Models.Object();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var url = $"{Configuration["ApiUrl"]}/Object?campaignId={CampaignId}&id={Id}";
+        _object = await http.GetFromJsonAsync<Models.Object>(url);
+    }
+
+    private async Task OnValidSubmit()
+    {
+        var url = $"{Configuration["ApiUrl"]}/Object?campaignId={CampaignId}&id={Id}";
+        await http.PutAsJsonAsync<Models.Object>(url, _object);
+        await js.InvokeVoidAsync("alert", $"Updated Successfully!");
+    }
+}
