@@ -1,5 +1,4 @@
 ﻿@page "/templates/objects"
-@using CampaignManager.App.Components.Lists
 @using CampaignManager.Models
 @using Microsoft.Extensions.Configuration
 @using CampaignManager.App.Components.Forms
@@ -61,7 +60,7 @@
 
     private async Task DeleteAsync(string id, string campaignId)
     {
-        var url = $"{Configuration["ApiUrl"]}/Object?campaignId={campaignId}&id={id}";
+        var url = $"{Configuration["ApiUrl"]}/Objects/{id}?campaignId={campaignId}";
         await http.DeleteAsync(url);
         await OnInitializedAsync();
     }

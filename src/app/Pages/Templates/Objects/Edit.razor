@@ -21,13 +21,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var url = $"{Configuration["ApiUrl"]}/Object?campaignId={CampaignId}&id={Id}";
+        var url = $"{Configuration["ApiUrl"]}/Objects/{Id}?campaignId={CampaignId}";
         _object = await http.GetFromJsonAsync<Models.Object>(url);
     }
 
     private async Task OnValidSubmit()
     {
-        var url = $"{Configuration["ApiUrl"]}/Object?campaignId={CampaignId}&id={Id}";
+        var url = $"{Configuration["ApiUrl"]}/Objects/{Id}?campaignId={CampaignId}";
         await http.PutAsJsonAsync<Models.Object>(url, _object);
         await js.InvokeVoidAsync("alert", $"Updated Successfully!");
     }

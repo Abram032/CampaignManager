@@ -16,12 +16,13 @@ namespace CampaignManager.Api.Object
     {
         [FunctionName("ObjectUpdate")]
         public static void Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Object")] Models.Object @object,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Objects/{id}")] Models.Object @object,
             [CosmosDB(
                 databaseName: "CampaignManager",
                 collectionName: "Objects",
                 ConnectionStringSetting = "AZURE_COSMOS_DB_CONNECTION_STRING"
             )] out dynamic document,
+            string id,
             ILogger log)
         {
             document = new { 

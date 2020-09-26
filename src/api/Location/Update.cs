@@ -16,12 +16,13 @@ namespace CampaignManager.Api.Location
     {
         [FunctionName("LocationUpdate")]
         public static void Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Location")] Models.Location location,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Locations/{id}")] Models.Location location,
             [CosmosDB(
                 databaseName: "CampaignManager",
                 collectionName: "Locations",
                 ConnectionStringSetting = "AZURE_COSMOS_DB_CONNECTION_STRING"
             )] out dynamic document,
+            string id,
             ILogger log)
         {
             document = new { 

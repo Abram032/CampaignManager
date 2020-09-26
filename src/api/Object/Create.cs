@@ -14,7 +14,7 @@ namespace CampaignManager.Api.Object
     {
         [FunctionName("ObjectCreate")]
         public static void Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Object")] Models.Object @object,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Objects")] Models.Object @object,
             [CosmosDB(
                 databaseName: "CampaignManager",
                 collectionName: "Objects",

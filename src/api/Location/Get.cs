@@ -18,15 +18,16 @@ namespace CampaignManager.Api.Location
         public static IActionResult Run(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, "get", 
-                Route = "Location"
+                Route = "Locations/{id}"
             )] HttpRequest req,
             [CosmosDB(
                 databaseName: "CampaignManager",
                 collectionName: "Locations",
-                Id = "{Query.id}",
+                Id = "{id}",
                 PartitionKey = "{Query.campaignId}",
                 ConnectionStringSetting = "AZURE_COSMOS_DB_CONNECTION_STRING"
             )] Models.Location location,
+            string id,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");

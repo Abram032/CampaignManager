@@ -14,7 +14,7 @@ namespace CampaignManager.Api.Location
     {
         [FunctionName("LocationCreate")]
         public static void Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Location")] Models.Location location,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Locations")] Models.Location location,
             [CosmosDB(
                 databaseName: "CampaignManager",
                 collectionName: "Locations",
@@ -31,6 +31,7 @@ namespace CampaignManager.Api.Location
                 coalition = location.Coalition,
                 coordinates = location.Coordinates,
                 services = location.Services,
+                status = location.Status,
                 items = location.Items
             };
 

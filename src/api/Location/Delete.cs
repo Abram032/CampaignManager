@@ -18,12 +18,12 @@ namespace CampaignManager.Api.Location
         public static async Task<IActionResult> Run(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, "delete", 
-                Route = "Location"
+                Route = "Locations/{id}"
             )] HttpRequest req,
             [CosmosDB(
                 databaseName: "CampaignManager",
                 collectionName: "Locations",
-                Id = "{Query.id}",
+                Id = "{id}",
                 PartitionKey = "{Query.campaignId}",
                 ConnectionStringSetting = "AZURE_COSMOS_DB_CONNECTION_STRING"
             )] Document document,
@@ -32,6 +32,7 @@ namespace CampaignManager.Api.Location
                 collectionName: "Locations",
                 ConnectionStringSetting = "AZURE_COSMOS_DB_CONNECTION_STRING"
             )] DocumentClient client,
+            string id,
             ILogger log)
         {
             string campaignId = req.Query["campaignId"];

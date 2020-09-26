@@ -5,8 +5,8 @@ namespace CampaignManager.Models
 {
     public class Location
     {
-        public Guid Id { get; set; }
-        public Guid CampaignId { get; set; }
+        public string Id { get; set; }
+        public string CampaignId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public Country Country { get; set; }
