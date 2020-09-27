@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.Extensions.Configuration
 @using CampaignManager.Models
+@using static CampaignManager.Models.EnumExtensions 
 
 @inject IConfiguration Configuration
 
@@ -37,27 +38,27 @@
     <div class="form-group">
         <label for="@Location.Country">Country: </label>
         <InputSelect class="form-control" @bind-Value="Location.Country">
-            @foreach (var country in Enum.GetValues(typeof(Country)))
+            @foreach (Country country in Enum.GetValues(typeof(Country)))
             {
-                <option value="@country">@country.ToString()</option>
+                <option value="@country">@EnumExtensions.GetDescription(country)</option>
             }
         </InputSelect>
     </div>
     <div class="form-group">
         <label for="@Location.Coalition">Coalition: </label>
         <InputSelect class="form-control" @bind-Value="Location.Coalition">
-            @foreach (var coalition in Enum.GetValues(typeof(Coalition)))
+            @foreach (Coalition coalition in Enum.GetValues(typeof(Coalition)))
             {
-                <option value="@coalition">@coalition.ToString()</option>
+                <option value="@coalition">@EnumExtensions.GetDescription(coalition)</option>
             }
         </InputSelect>
     </div>
     <div class="form-group">
         <label for="@Location.Status">Status: </label>
         <InputSelect class="form-control" @bind-Value="Location.Status">
-            @foreach (var status in Enum.GetValues(typeof(Status)))
+            @foreach (Status status in Enum.GetValues(typeof(Status)))
             {
-                <option value="@status">@status.ToString()</option>
+                <option value="@status">@EnumExtensions.GetDescription(status)</option>
             }
         </InputSelect>
     </div>
@@ -72,7 +73,7 @@
             }
             <div class="form-group ml-5">
                 <input type="checkbox" class="form-check-input" checked="@Checked" @onchange="eventArgs => { ServiceCheckboxClicked(service, eventArgs.Value); }" />
-                <label class="form-check-label">@service.ToString()</label>
+                <label class="form-check-label">@EnumExtensions.GetDescription(service)</label>
             </div>
         }
     </div>
@@ -88,8 +89,10 @@
                         <th scope="col">#</th>
                         <th scope="col">Use Template</th>
                         <th scope="col">Name</th>
+                        <th scope="col">Class</th>
                         <th scope="col">Category</th>
                         <th scope="col">Subcategory</th>
+                        <th scope="col">Available at</th>
                         <th scope="col">Country</th>
                         <th scope="col">Coalition</th>
                         <th scope="col">Status</th>
@@ -123,43 +126,56 @@
                                 }
                             </td>
                             <td>
-                                <InputSelect class="form-control" ValueExpression="@(() => Location.Items[index].Category)" Value="@Location.Items[index].Category" ValueChanged="@((Category value) => OnCategoryUpdate(value, Location.Items[index]))" disabled="@Location.Items[index].UsesTemplate">
-                                    @foreach (var category in Enum.GetValues(typeof(Category)))
+                                <InputSelect class="form-control" ValueExpression="@(() => Location.Items[index].Class)" Value="@Location.Items[index].Class" ValueChanged="@((Class value) => OnClassUpdate(value, Location.Items[index]))" disabled="@Location.Items[index].UsesTemplate">
+                                    @foreach (Class _class in Enum.GetValues(typeof(Class)))
                                     {
-                                        <option value="@category">@category.ToString()</option>
+                                        <option value="@_class">@EnumExtensions.GetDescription(_class)</option>
+                                    }
+                                </InputSelect>
+                            </td>
+                            <td>
+                                <InputSelect class="form-control" ValueExpression="@(() => Location.Items[index].Category)" Value="@Location.Items[index].Category" ValueChanged="@((Category value) => OnCategoryUpdate(value, Location.Items[index]))" disabled="@Location.Items[index].UsesTemplate">
+                                    @foreach (Category category in Enum.GetValues(typeof(Category)))
+                                    {
+                                        <option value="@category">@EnumExtensions.GetDescription(category)</option>
                                     }
                                 </InputSelect>
                             </td>
                             <td>
                                 <InputSelect class="form-control" @bind-Value="Location.Items[index].Subcategory" disabled="@Location.Items[index].UsesTemplate">
-                                    @foreach (var subcategory in Enum.GetValues(typeof(Subcategory)))
-                                        {
-                                        <option value="@subcategory">@subcategory.ToString()</option>
-                                        }
+                                    @foreach (Subcategory subcategory in Enum.GetValues(typeof(Subcategory)))
+                                     {
+                                         <option value="@subcategory">@EnumExtensions.GetDescription(subcategory)</option>
+                                     }
                                 </InputSelect>
                             </td>
                             <td>
+                                <InputDate class="form-control" @bind-Value="Location.Items[index].AvailableAt">
+
+                                </InputDate>
+                            </td>
+                            <td>
                                 <InputSelect class="form-control" @bind-Value="Location.Items[index].Country" disabled="@(Location.Items[index].Category == Category.Armament)">
-                                    @foreach (var country in Enum.GetValues(typeof(Country)))
-                                        {
-                                        <option value="@country">@country.ToString()</option>
-                                        }
+                                    @foreach (Country country in Enum.GetValues(typeof(Country)))
+                                     {
+                                        <option value="@country">@EnumExtensions.GetDescription(country)</option>
+                                     }
                                 </InputSelect>
                             </td>
                             <td>
                                 <InputSelect class="form-control" @bind-Value="Location.Items[index].Coalition" disabled="@(Location.Items[index].Category == Category.Armament)">
-                                    @foreach (var coalition in Enum.GetValues(typeof(Coalition)))
-                                        {
-                                        <option value="@coalition">@coalition.ToString()</option>
-                                        }
+                                    @foreach (Coalition coalition in Enum.GetValues(typeof(Coalition)))
+                                     {
+                                        <option value="@coalition">@EnumExtensions.GetDescription(coalition)</option>
+                                     }
                                 </InputSelect>
                             </td>
                             <td>
                                 <InputSelect class="form-control" @bind-Value="Location.Items[index].Status" disabled="@(Location.Items[index].Category == Category.Armament)">
-                                    @foreach (var status in Enum.GetValues(typeof(Status)))
-                                        {
-                                        <option value="@status">@status.ToString()</option>
-                                        }
+                                    @foreach (Status status in Enum.GetValues(typeof(Status)))
+                                     {
+                                        <option value="@status">@EnumExtensions.GetDescription(status)</option>
+                                     }
                                 </InputSelect>
                             </td>
                             <td>
@@ -208,6 +224,11 @@
         StateHasChanged();
     }
 
+    private void OnClassUpdate(Class value, Item item)
+    {
+        item.Class = value;
+    }
+
     private void OnNameUpdate(string value, Item item)
     {
         item.Name = value;
@@ -232,10 +253,12 @@
     {
         item.UsesTemplate = value;
         item.Name = string.Empty;
+        item.Class = default;
         item.Category = default;
         item.Coalition = default;
         item.Country = default;
         item.Subcategory = default;
+        item.AvailableAt = default;
         item.Status = default;
         item.Count = default;
     }

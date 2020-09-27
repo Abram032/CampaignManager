@@ -9,7 +9,14 @@
 
 <h1>Location template - Edit</h1>
 
-<LocationForm Location="location" Objects="@objects" OnValidSubmit="@OnValidSubmit"></LocationForm>
+@if (!isLoaded)
+{
+    <Loader></Loader>
+}
+else
+{
+    <LocationForm Location="location" Objects="@objects" OnValidSubmit="@OnValidSubmit"></LocationForm>
+}
 
 @code
 { 
@@ -18,6 +25,7 @@
     [Parameter]
     public Guid CampaignId { get; set; }
 
+    private bool isLoaded;
     private List<Models.Object> objects = new List<Models.Object>();
     private Location location = new Location
     {
@@ -34,7 +42,7 @@
         location = await http.GetFromJsonAsync<Location>(locationUrl);
         var objectsUrl = $"{Configuration["ApiUrl"]}/Objects?campaignId={Guid.Empty}";
         objects = (await http.GetFromJsonAsync<IEnumerable<Models.Object>>(objectsUrl)).ToList();
-
+        isLoaded = true;
     }
 
     private async Task OnValidSubmit()

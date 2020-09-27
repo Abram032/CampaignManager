@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 
 namespace CampaignManager.Models
 {
@@ -9,6 +10,7 @@ namespace CampaignManager.Models
         Helicopters,
         Vehicle,
         Ship,
+        [Description("Air Defence")]
         AirDefence,
         Armament,
         Static,

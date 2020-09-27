@@ -26,6 +26,7 @@ namespace CampaignManager.Api.Object
                 id = Guid.NewGuid(),
                 campaignId = @object.CampaignId,
                 name = @object.Name,
+                @class = @object.Class,
                 category = @object.Category,
                 subcategory = @object.Subcategory,
                 cost = @object.Cost

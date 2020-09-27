@@ -21,6 +21,20 @@ app {
     flex-direction: column;
 }
 
+.loader {
+    text-align: center;
+    vertical-align: central;
+}
+
+.loader > span {
+    color: rebeccapurple;
+}
+
+.loader > p {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    font-size: large;
+}
+
 .top-row {
     height: 3.5rem;
     display: flex;

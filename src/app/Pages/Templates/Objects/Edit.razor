@@ -8,7 +8,14 @@
 
 <h1>Object template - Edit</h1>
 
-<ObjectForm Object="@_object" OnValidSubmit="@OnValidSubmit"></ObjectForm>
+@if (!isLoaded)
+{
+    <Loader></Loader>
+}
+else
+{
+    <ObjectForm Object="@_object" OnValidSubmit="@OnValidSubmit"></ObjectForm>
+}
 
 @code
 {   
@@ -17,12 +24,14 @@
     [Parameter]
     public Guid CampaignId { get; set; }
 
+    private bool isLoaded;
     private Models.Object _object = new Models.Object();
 
     protected override async Task OnInitializedAsync()
     {
         var url = $"{Configuration["ApiUrl"]}/Objects/{Id}?campaignId={CampaignId}";
         _object = await http.GetFromJsonAsync<Models.Object>(url);
+        isLoaded = true;
     }
 
     private async Task OnValidSubmit()

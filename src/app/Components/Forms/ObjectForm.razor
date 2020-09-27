@@ -18,20 +18,29 @@
         <InputText class="form-control" @bind-Value="@Object.Name"></InputText>
     </div>
     <div class="form-group">
+        <label for="@Object.Class">Class: </label>
+        <InputSelect class="form-control" @bind-Value="Object.Class">
+            @foreach (Class _class in Enum.GetValues(typeof(Class)))
+            {
+                <option value="@_class">@EnumExtensions.GetDescription(_class)</option>
+            }
+        </InputSelect>
+    </div>
+    <div class="form-group">
         <label for="@Object.Category">Category: </label>
         <InputSelect class="form-control" @bind-Value="Object.Category">
-            @foreach (var category in Enum.GetValues(typeof(Category)))
+            @foreach (Category category in Enum.GetValues(typeof(Category)))
             {
-                <option value="@category">@category.ToString()</option>
+            <option value="@category">@EnumExtensions.GetDescription(category)</option>
             }
         </InputSelect>
     </div>
     <div class="form-group">
         <label for="@Object.Subcategory">Subcategory: </label>
         <InputSelect class="form-control" @bind-Value="Object.Subcategory">
-            @foreach (var subcategory in Enum.GetValues(typeof(Subcategory)))
+            @foreach (Subcategory subcategory in Enum.GetValues(typeof(Subcategory)))
             {
-                <option value="@subcategory">@subcategory.ToString()</option>
+            <option value="@subcategory">@EnumExtensions.GetDescription(subcategory)</option>
             }
         </InputSelect>
     </div>

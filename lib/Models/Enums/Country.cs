@@ -1,22 +1,27 @@
 using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace CampaignManager.Models
 {
     public enum Country
     {
         Unknown,
+        [Description("N/A")]
         NotApplicable,
         Afghanistan,
         Albania,
         Algeria,
         Andorra,
         Angola,
+        [Description("Antigua & Barbuda")]
         AntiguaAndBarbuda,
         Argentina,
         Armenia,
         Australia,
         Austria,
         Azerbaijan,
+        [Description("The Bahamas")]
         TheBahamas,
         Bahrain,
         Bangladesh,
@@ -27,39 +32,52 @@ namespace CampaignManager.Models
         Benin,
         Bhutan,
         Bolivia,
+        [Description("Bosnia & Herzegovina")]
         BosniaAndHerzegovina,
         Botswana,
         Brazil,
         Brunei,
         Bulgaria,
+        [Description("Burkina Faso")]
         BurkinaFaso,
         Burundi,
         Cambodia,
         Cameroon,
         Canada,
+        [Description("Cape Verde")]
         CapeVerde,
+        [Description("Central African Republic")]
         CentralAfricanRepublic,
         Chad,
         Chile,
         China,
         Colombia,
         Comoros,
+        [Description("Republic of the Congo")]
         RepublicOfTheCongo,
+        [Description("Democratic Republic of the Congo")]
         DemocraticRepublicOfTheCongo,
+        [Description("Costa Rica")]
         CostaRica,
+        [Description("Cote d'Ivoire")]
         CotedIvoire,
         Croatia,
         Cuba,
         Cyprus,
+        [Description("Czech Republic")]
         CzechRepublic,
         Denmark,
         Djibouti,
         Dominica,
+        [Description("Dominican Republic")]
         DominicanRepublic,
+        [Description("East Timor (Timor-Leste)")]
         EastTimor,
         Ecuador,
         Egypt,
+        [Description("El Salvador")]
         ElSalvador,
+        [Description("Equatorial Guinea")]
         EquatorialGuinea,
         Eritrea,
         Estonia,
@@ -68,6 +86,7 @@ namespace CampaignManager.Models
         Finland,
         France,
         Gabon,
+        [Description("The Gambia")]
         TheGambia,
         Georgia,
         Germany,
@@ -76,6 +95,7 @@ namespace CampaignManager.Models
         Grenada,
         Guatemala,
         Guinea,
+        [Description("Guinea-Bissau")]
         GuineaBissau,
         Guyana,
         Haiti,
@@ -95,7 +115,9 @@ namespace CampaignManager.Models
         Kazakhstan,
         Kenya,
         Kiribati,
+        [Description("North Korea")]
         NorthKorea,
+        [Description("South Korea")]
         SouthKorea,
         Kosovo,
         Kuwait,
@@ -116,10 +138,12 @@ namespace CampaignManager.Models
         Maldives,
         Mali,
         Malta,
+        [Description("Marshall Islands")]
         MarshallIslands,
         Mauritania,
         Mauritius,
         Mexico,
+        [Description("Federated States of Micronesia")]
         FederatedStatesOfMicronesia,
         Moldova,
         Monaco,
@@ -127,11 +151,13 @@ namespace CampaignManager.Models
         Montenegro,
         Morocco,
         Mozambique,
+        [Description("Myanmar (Burma)")]
         Myanmar,
         Namibia,
         Nauru,
         Nepal,
         Netherlands,
+        [Description("New Zeland")]
         NewZealand,
         Nicaragua,
         Niger,
@@ -141,6 +167,7 @@ namespace CampaignManager.Models
         Pakistan,
         Palau,
         Panama,
+        [Description("Papua New Guinea")]
         PapuaNewGuinea,
         Paraguay,
         Peru,
@@ -151,25 +178,36 @@ namespace CampaignManager.Models
         Romania,
         Russia,
         Rwanda,
+        [Description("Saint Kitts & Nevis")]
         SaintKittsAndNevis,
+        [Description("Saint Luicia")]
         SaintLucia,
+        [Description("Saint Vincent & the Grenadines")]
         SaintVincentAndTheGrenadines,
         Samoa,
+        [Description("San Marino")]
         SanMarino,
+        [Description("Sao Tome & Principe")]
         SaoTomeAndPrincipe,
+        [Description("Saudi Arabia")]
         SaudiArabia,
         Senegal,
         Serbia,
         Seychelles,
+        [Description("Sierra Leone")]
         SierraLeone,
         Singapore,
         Slovakia,
         Slovenia,
+        [Description("Solomon Islands")]
         SolomonIslands,
         Somalia,
+        [Description("South Africa")]
         SouthAfrica,
+        [Description("South Sudan")]
         SouthSudan,
         Spain,
+        [Description("Sri Lanka")]
         SriLanka,
         Sudan,
         Suriname,
@@ -183,6 +221,7 @@ namespace CampaignManager.Models
         Thailand,
         Togo,
         Tonga,
+        [Description("Trinidad & Tobago")]
         TrinidadAndTobago,
         Tunisia,
         Turkey,
@@ -190,12 +229,16 @@ namespace CampaignManager.Models
         Tuvalu,
         Uganda,
         Ukraine,
+        [Description("United Arab Emirates")]
         UnitedArabEmirates,
+        [Description("United Kingdom")]
         UnitedKingdom,
+        [Description("United States of America")]
         UnitedStatesOfAmerica,
         Uruguay,
         Uzbekistan,
         Vanuatu,
+        [Description("Vatican City (Holy See)")]
         VaticanCity,
         Venezuela,
         Vietnam,

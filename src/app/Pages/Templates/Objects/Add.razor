@@ -8,7 +8,14 @@
 
 <h1>Object template - Add</h1>
 
-<ObjectForm Object="@_object" OnValidSubmit="@OnValidSubmit"></ObjectForm>
+@if(!isLoaded)
+{
+    <Loader></Loader>
+} 
+else
+{
+    <ObjectForm Object="@_object" OnValidSubmit="@OnValidSubmit"></ObjectForm>
+}
 
 @code
 { 
@@ -17,11 +24,17 @@
     [Parameter]
     public Guid CampaignId { get; set; }
 
+    private bool isLoaded;
     private Models.Object _object = new Models.Object
     {
         Id = Guid.NewGuid().ToString(),
         CampaignId = Guid.Empty.ToString()
     };
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoaded = true;
+    }
 
     private async Task OnValidSubmit()
     {
