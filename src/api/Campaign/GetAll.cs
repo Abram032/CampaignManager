@@ -9,30 +9,28 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents;
+using System.Collections.Generic;
 
 namespace CampaignManager.Api.Campaign
 {
-    public static class Get
+    public static class GetAll
     {
-        [FunctionName("CampaignGet")]
+        [FunctionName("CampaignGetAll")]
         public static IActionResult Run(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, "get", 
-                Route = "Campaigns/{id}"
+                Route = "Campaigns"
             )] HttpRequest req,
             [CosmosDB(
                 databaseName: "CampaignManager",
                 collectionName: "Campaigns",
-                Id = "{id}",
-                PartitionKey = "{id}",
                 ConnectionStringSetting = "AZURE_COSMOS_DB_CONNECTION_STRING"
-            )] Models.Campaign campaign,
-            string id,
+            )] IEnumerable<Models.Campaign> campaigns,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            return new OkObjectResult(campaign);
+            return new OkObjectResult(campaigns);
         }
     }
 }

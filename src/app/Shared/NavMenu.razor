@@ -1,4 +1,10 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@using CampaignManager.Models
+@using Microsoft.Extensions.Configuration
+
+@inject IConfiguration Configuration
+@inject HttpClient http
+
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">CampaignManager.App</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -8,18 +14,26 @@
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
         <li class="nav-item px-3">
+            <NavLink class="nav-link" href="campaigns/add">
+                <span class="fas fa-lg fa-globe-europe mr-2" aria-hidden="true"></span> Create campaign
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
             <NavLink class="nav-link" @onclick="() => expandCampaignsMenu = !expandCampaignsMenu">
                 <span class="fas fa-lg fa-map-marked-alt mr-2" aria-hidden="true"></span> Campaigns
             </NavLink>
             @if(expandCampaignsMenu)
             {
-                <ul class="nav flex-column">
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="campaigns">
-                            <span class="fas fa-lg fa-globe-europe mr-2" aria-hidden="true"></span> Campaign1
-                        </NavLink>
-                    </li>
-                </ul>
+                @foreach(var campaign in campaigns)
+                {
+                    <ul class="nav flex-column">
+                        <li class="nav-item px-3">
+                            <NavLink class="nav-link" href="@($"campaigns/{campaign.Id}")">
+                                <span class="fas fa-lg fa-map-marked-alt mr-2" aria-hidden="true"></span> @campaign.Shortcut
+                            </NavLink>
+                        </li>
+                    </ul>
+                }              
             }
         </li>
         <li class="nav-item px-3">
@@ -49,11 +63,22 @@
     private bool collapseNavMenu = true;
     private bool expandTemplatesMenu = true;
     private bool expandCampaignsMenu = true;
+    private bool isLoaded;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private List<Campaign> campaigns = new List<Campaign>();
 
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine(Configuration["ApiUrl"]);
+        var url = $"{Configuration["ApiUrl"]}/Campaigns";
+        campaigns = (await http.GetFromJsonAsync<IEnumerable<Campaign>>(url)).ToList();
+        isLoaded = true;
     }
 }

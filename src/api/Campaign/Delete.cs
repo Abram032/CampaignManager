@@ -18,13 +18,13 @@ namespace CampaignManager.Api.Campaign
         public static async Task<IActionResult> Run(
             [HttpTrigger(
                 AuthorizationLevel.Anonymous, "delete", 
-                Route = "Campaign"
+                Route = "Campaigns/{id}"
             )] HttpRequest req,
             [CosmosDB(
                 databaseName: "CampaignManager",
                 collectionName: "Campaigns",
-                Id = "{Query.id}",
-                PartitionKey = "{Query.partitionKey}",
+                Id = "{id}",
+                PartitionKey = "{id}",
                 ConnectionStringSetting = "AZURE_COSMOS_DB_CONNECTION_STRING"
             )] Document document,
             [CosmosDB(
@@ -32,10 +32,11 @@ namespace CampaignManager.Api.Campaign
                 collectionName: "Campaigns",
                 ConnectionStringSetting = "AZURE_COSMOS_DB_CONNECTION_STRING"
             )] DocumentClient client,
+            string id,
             ILogger log)
         {
-            string partitionKey = req.Query["partitionKey"];
-            await client.DeleteDocumentAsync(document.SelfLink, new RequestOptions() { PartitionKey = new PartitionKey(partitionKey)});
+            string campaignId = req.Query["campaignId"];
+            await client.DeleteDocumentAsync(document.SelfLink, new RequestOptions() { PartitionKey = new PartitionKey(campaignId)});
 
             log.LogInformation("C# HTTP trigger function processed a request.");
 

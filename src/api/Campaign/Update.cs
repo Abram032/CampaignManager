@@ -16,18 +16,20 @@ namespace CampaignManager.Api.Campaign
     {
         [FunctionName("CampaignUpdate")]
         public static void Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Campaign")] Models.Campaign campaign,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Campaigns/{id}")] Models.Campaign campaign,
             [CosmosDB(
                 databaseName: "CampaignManager",
                 collectionName: "Campaigns",
                 ConnectionStringSetting = "AZURE_COSMOS_DB_CONNECTION_STRING"
             )] out dynamic document,
+            string id,
             ILogger log)
         {
             document = new { 
                 id = campaign.Id,
-                partitionKey = campaign.PartitionKey,
+                campaignId = campaign.CampaignId,
                 name = campaign.Name,
+                shortcut = campaign.Shortcut,
                 description = campaign.Description,
                 startDate = campaign.StartDate,
                 endDate = campaign.EndDate,

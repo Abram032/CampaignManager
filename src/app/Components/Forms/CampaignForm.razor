@@ -1,0 +1,122 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using CampaignManager.Models
+
+
+    <EditForm Model="@Campaign" OnValidSubmit="@OnValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group">
+            <label for="CampaignId">Campaign Id: </label>
+            <InputText class="form-control" @bind-Value="@Campaign.CampaignId" disabled></InputText>
+        </div>
+        <div class="form-group">
+            <label for="Id">Id: </label>
+            <InputText class="form-control" @bind-Value="@Campaign.Id" disabled></InputText>
+        </div>
+        <div class="form-group">
+            <label for="@Campaign.Name">Name: </label>
+            <InputText class="form-control" @bind-Value="@Campaign.Name"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="@Campaign.Shortcut">Shortcut: </label>
+            <InputText class="form-control" @bind-Value="@Campaign.Shortcut"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="@Campaign.Description">Description: </label>
+            <InputTextArea class="form-control" @bind-Value="@Campaign.Description"></InputTextArea>
+        </div>
+        <div class="form-group">
+            <label for="@Campaign.Currency">Currency sign: </label>
+            <InputText class="form-control" @bind-Value="@Campaign.Currency"></InputText>
+        </div>
+        <div class="form-group">
+            <label for="@Campaign.StartDate">Start date: </label>
+            <InputDate class="form-control" @bind-Value="@Campaign.StartDate"></InputDate>
+        </div>
+        <div class="form-group">
+            <label for="@Campaign.EndDate">End date: </label>
+            <InputDate class="form-control" @bind-Value="@Campaign.EndDate"></InputDate>
+        </div>
+        <div class="form-group">
+            <label for="@Campaign.IsActive">Is active: </label>
+            <InputCheckbox class="form-check" @bind-Value="Campaign.IsActive" />
+        </div>
+        <div class="form-group">
+            <label for="@Campaign.Participants">Participants: </label>
+            <div class="form-group">
+                <button class="btn btn-success" type="button" @onclick="() => Campaign.Participants.Add(new Participant())"><span class="fas fa-plus mr-2"></span>Add</button>
+            </div>
+            <div class="form-group">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Country</th>
+                            <th scope="col">Coalition</th>
+                            <th scope="col">Budget</th>
+                            <th scope="col">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Campaign.Participants.Count; i++)
+                        {
+                            int index = i;
+                            <tr>
+                                <th scope="row">@(index + 1)</th>
+                                <td>
+                                    <InputText class="form-control" @bind-Value="@Campaign.Participants[index].Name"></InputText>
+                                </td>
+                                <td>
+                                    <InputSelect class="form-control" @bind-Value="Campaign.Participants[index].Country">
+                                        @foreach (Country country in Enum.GetValues(typeof(Country)))
+                                            {
+                                            <option value="@country">@EnumExtensions.GetDescription(country)</option>
+                                            }
+                                    </InputSelect>
+                                </td>
+                                <td>
+                                    <InputSelect class="form-control" @bind-Value="Campaign.Participants[index].Coalition">
+                                        @foreach (Coalition coalition in Enum.GetValues(typeof(Coalition)))
+                                            {
+                                            <option value="@coalition">@EnumExtensions.GetDescription(coalition)</option>
+                                            }
+                                    </InputSelect>
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrWhiteSpace(Campaign.Currency))
+                                    {
+                                        <div class="input-group">
+                                            <InputNumber class="form-control" @bind-Value="Campaign.Participants[index].Budget" />
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">@Campaign.Currency</span>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <InputNumber class="form-control" @bind-Value="Campaign.Participants[index].Budget" />
+                                    }
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger" type="button" @onclick="() => Campaign.Participants.Remove(Campaign.Participants[index])">
+                                        <span class="fas fa-trash"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <button class="btn btn-success" type="submit"><span class="fas fa-save mr-2"></span>Save</button>
+    </EditForm>
+
+
+@code
+{
+    [Parameter]
+    public Campaign Campaign { get; set; }
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+}
