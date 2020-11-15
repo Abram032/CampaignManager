@@ -26,15 +26,17 @@ namespace CampaignManager.App
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(
-                    Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<UserDbContext>(options =>
+                options.UseSqlite(Configuration.GetConnectionString("UserDatabaseConnectionString")));
+
+            services.AddDbContext<AppDbContext>(options => 
+                options.UseSqlite(Configuration.GetConnectionString("AppDatabaseConnectionString")));
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<UserDbContext>();
 
             services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+                .AddApiAuthorization<ApplicationUser, UserDbContext>();
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
