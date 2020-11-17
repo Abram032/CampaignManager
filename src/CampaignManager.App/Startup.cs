@@ -27,10 +27,10 @@ namespace CampaignManager.App
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<UserDbContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("UserDatabaseConnectionString")));
+                options.UseMySql(Configuration.GetConnectionString("UserDatabaseConnectionString")));
 
             services.AddDbContext<AppDbContext>(options => 
-                options.UseSqlite(Configuration.GetConnectionString("AppDatabaseConnectionString")));
+                options.UseMySql(Configuration.GetConnectionString("AppDatabaseConnectionString")));
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<UserDbContext>();
