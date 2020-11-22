@@ -35,65 +35,91 @@ export class DataGrid extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      columns: [
-        { name: 'id', title: 'Id' },
-        { name: 'name', title: 'Name' },
-        { name: 'type', title: 'Type' },
-      ],
-      rows: [
-        { id: '1', name: 'Air-Superiority Fighter', type: 'Fighter' },
-        { id: '2', name: 'Attack Aircraft', type: 'Attack' },
-        { id: '3', name: 'Reconissance Aircraft', type: 'Fighter' },
-        { id: '4', name: 'Multi-role Aircraft', type: 'Fighter' }
-      ],
-      grouping: [],
-      currentPage: 1,
-      pageSize: 10
+      columns: this.props.columns,
+      rows: this.props.rows ?? [],
+      grouping: this.props.grouping ?? [],
+      currentPage: this.props.currentPage ?? 1,
+      pageSize: this.props.pageSize ?? 10
     }
   }
+  
+  async componentDidMount() {
+    const response = await fetch(this.props.apiUri);
+    const data = await response.json();
+    this.setState({ rows: data });
+  };
 
-  commitChanges = ({ added, changed, deleted }) => {
-    let changedRows;
+  sendRequest = async(uri, method, data) => {
+    let response = await fetch(uri, {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data) ?? null
+    });
+    if(response.status >= 200 && response.status <= 300) {
+      return await response.json();
+    }
+    console.error(await response.json());
+    return null; 
+  };
+
+  commitChanges = async ({ added, changed, deleted }) => {
+    let rows = this.state.rows;
     if (added) {
-      const startingAddedId = this.state.rows.length > 0 ? this.state.rows[this.state.rows.length - 1].id + 1 : 0;
-      changedRows = [
-        ...this.state.rows,
-        ...added.map((row, index) => ({
-          id: startingAddedId + index,
-          ...row,
-        })),
-      ];
+      let element = added[0];
+      let response = await this.sendRequest(this.props.apiUri, 'POST', element);
+      if(response) {
+        rows.push(response);
+      }
     }
     if (changed) {
-      changedRows = this.state.rows.map(row => (changed[row.id] ? { ...row, ...changed[row.id] } : row));
+      rows = this.state.rows.map(row => (changed[row.id] ? { ...row, ...changed[row.id] } : row));
+      let changedRows = rows.filter(row => !this.state.rows.map(currRow => currRow.id).includes(row.id));
+
+      await changedRows.forEach(async element => {
+        let response = await fetch(`${this.props.apiUri}/${element.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(element)
+        });
+        let result = await response.body.json();
+      });
     }
     if (deleted) {
       const deletedSet = new Set(deleted);
-      changedRows = this.state.rows.filter(row => !deletedSet.has(row.id));
+      rows = this.state.rows.filter(row => !deletedSet.has(row.id));
+
+      let changedRows = rows.filter(row => !this.state.rows.map(currRow => currRow.id).includes(row.id));
+      changedRows.forEach(async element => {
+        let response = await fetch(`${this.props.apiUri}/${element.id}`, {
+          method: 'DELETE'
+        });
+        let result = await response.body.json();
+      });
     }
-    this.setRows(changedRows);
+    debugger;
+    this.setRows(rows);
   };
-
-  setRows = (changedRows) => this.setState({ rows: changedRows });
-
   getRowId = row => row.id;
-
+  setRows = (changedRows) => this.setState({ rows: changedRows });
   setGrouping = (grouping) => this.setState({ grouping: grouping });
   setCurrentPage = (page) => this.setState({ currentPage: page });
   setPageSize = (size) => this.setState({ pageSize: size });
 
-  RowDetail = ({ row }) => (
-    <div>
-      Details for
-      {' '}
-      {row.id}
-      {' - '}
-      {row.name}
-      {' of type '}
-      {row.type}
-    </div>
-  );
-
+  rowDetails = () => {
+    if(this.props.rowDetail) {
+      return (
+        <TableRowDetail
+          contentComponent={this.props.rowDetail}
+        />
+      )
+    }
+    return null;
+  };
+  
   render() {
     return (
         <div className="card">
@@ -107,7 +133,7 @@ export class DataGrid extends Component {
               onCommitChanges={this.commitChanges}
             />
             <SortingState
-              defaultSorting={[{ columnName: 'id', direction: 'asc' }]}
+              defaultSorting={[{ columnName: this.state.columns[0].name, direction: 'asc' }]}
             />
             <IntegratedSorting />
             <PagingState
@@ -129,16 +155,12 @@ export class DataGrid extends Component {
             />
             <Table />
             <TableColumnReordering
-              defaultOrder={['id', 'name', 'type']}
+              defaultOrder={this.state.columns.map((val) => ( val.name ))}
             />
             <TableColumnVisibility
               defaultHiddenColumnNames={[]}
             />
-            <TableColumnResizing defaultColumnWidths={[
-              { columnName: 'id', width: 200 },
-              { columnName: 'name', width: 200 },
-              { columnName: 'type', width: 200 },
-            ]} />
+            <TableColumnResizing defaultColumnWidths={this.state.columns.map((val) => ( { columnName: val.name, width: 200 } ))} />
             
             <TableGroupRow />
             <TableHeaderRow showSortingControls showGroupingControls />
@@ -147,9 +169,7 @@ export class DataGrid extends Component {
               pageSizes={[1, 2, 3, 5, 10, 15]}
             />
             <TableFilterRow />
-            <TableRowDetail
-              contentComponent={this.RowDetail}
-            />
+            {this.rowDetails()}
             <TableEditRow />
             <Toolbar />
             <ColumnChooser />

@@ -29,9 +29,11 @@ namespace CampaignManager.App.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Category>().HasKey(p => p.Id);
+            modelBuilder.Entity<Category>().Property(p => p.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Category>().Property(p => p.Name).HasMaxLength(100).IsRequired();
 
             modelBuilder.Entity<Coalition>().HasKey(p => p.Id);
+            modelBuilder.Entity<Coalition>().Property(p => p.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Coalition>().Property(p => p.Name).HasMaxLength(100).IsRequired();
             modelBuilder.Entity<Coalition>().Property(p => p.Color).HasMaxLength(7).IsRequired(false);
 
@@ -39,21 +41,26 @@ namespace CampaignManager.App.Data
             modelBuilder.Entity<Country>().Property(p => p.Name).HasMaxLength(100).IsRequired();
 
             modelBuilder.Entity<Object>().HasKey(p => p.Id);
+            modelBuilder.Entity<Object>().Property(p => p.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Object>().Property(p => p.Name).HasMaxLength(100).IsRequired();
             modelBuilder.Entity<Object>().Property(p => p.Type).IsRequired();
             modelBuilder.Entity<Object>().HasOne(p => p.Category).WithMany().IsRequired(false);
             modelBuilder.Entity<Object>().HasOne(p => p.Subcategory).WithMany().IsRequired(false);
 
             modelBuilder.Entity<Service>().HasKey(p => p.Id);
+            modelBuilder.Entity<Service>().Property(p => p.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Service>().Property(p => p.Name).HasMaxLength(100).IsRequired();
 
             modelBuilder.Entity<Status>().HasKey(p => p.Id);
+            modelBuilder.Entity<Status>().Property(p => p.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Status>().Property(p => p.Name).HasMaxLength(100).IsRequired();
 
             modelBuilder.Entity<Subcategory>().HasKey(p => p.Id);
+            modelBuilder.Entity<Subcategory>().Property(p => p.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Subcategory>().Property(p => p.Name).HasMaxLength(100).IsRequired();
 
             modelBuilder.Entity<Campaign>().HasKey(p => p.Id);
+            modelBuilder.Entity<Campaign>().Property(p => p.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Campaign>().Property(p => p.Name).HasMaxLength(100).IsRequired();
             modelBuilder.Entity<Campaign>().Property(p => p.Abbreviation).HasMaxLength(10).IsRequired();
             modelBuilder.Entity<Campaign>().Property(p => p.Description).HasMaxLength(10000).IsRequired(false);
@@ -64,6 +71,7 @@ namespace CampaignManager.App.Data
             modelBuilder.Entity<Campaign>().HasMany(p => p.Factions).WithOne(p => p.Campaign);
 
             modelBuilder.Entity<Location>().HasKey(p => p.Id);
+            modelBuilder.Entity<Location>().Property(p => p.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Location>().Property(p => p.Name).HasMaxLength(100).IsRequired();
             modelBuilder.Entity<Location>().Property(p => p.Description).HasMaxLength(500);
             modelBuilder.Entity<Location>().Property(p => p.Longitude).IsRequired(false);
@@ -75,6 +83,7 @@ namespace CampaignManager.App.Data
             modelBuilder.Entity<Location>().HasOne(p => p.Campaign).WithMany().IsRequired();
 
             modelBuilder.Entity<Mission>().HasKey(p => p.Id);
+            modelBuilder.Entity<Mission>().Property(p => p.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Mission>().Property(p => p.Name).HasMaxLength(100).IsRequired();
             modelBuilder.Entity<Mission>().Property(p => p.Description).HasMaxLength(10000);
             modelBuilder.Entity<Mission>().Property(p => p.StartDate).IsRequired();
@@ -85,11 +94,13 @@ namespace CampaignManager.App.Data
             modelBuilder.Entity<Mission>().HasMany(p => p.Objectives).WithOne();
 
             modelBuilder.Entity<Objective>().HasKey(p => p.Id);
+            modelBuilder.Entity<Objective>().Property(p => p.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Objective>().Property(p => p.Name).HasMaxLength(100).IsRequired();
             modelBuilder.Entity<Objective>().Property(p => p.Description).HasMaxLength(500);
             modelBuilder.Entity<Objective>().Property(p => p.Completed).IsRequired();
 
             modelBuilder.Entity<Faction>().HasKey(p => p.Id);
+            modelBuilder.Entity<Faction>().Property(p => p.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Faction>().Property(p => p.Name).HasMaxLength(100).IsRequired();
             modelBuilder.Entity<Faction>().Property(p => p.Budget).IsRequired();
             modelBuilder.Entity<Faction>().HasOne(p => p.Campaign).WithMany(p => p.Factions).IsRequired();
@@ -99,6 +110,7 @@ namespace CampaignManager.App.Data
             modelBuilder.Entity<Faction>().HasMany(p => p.Missions).WithOne(p => p.Faction);
 
             modelBuilder.Entity<Item>().HasKey(p => p.Id);
+            modelBuilder.Entity<Item>().Property(p => p.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Item>().Property(p => p.Name).HasMaxLength(100).IsRequired();
             modelBuilder.Entity<Item>().Property(p => p.AvailableAt).IsRequired(false);
             modelBuilder.Entity<Item>().Property(p => p.Count).IsRequired();

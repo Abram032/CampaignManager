@@ -7,7 +7,8 @@ import { Counter } from './components/Counter';
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
 import { ApplicationPaths } from './components/api-authorization/ApiAuthorizationConstants';
-import { DataGrid } from './components/forms/DataGrid';
+import { Categories } from './pages/templates/Categories';
+import { Coalitions } from './pages/templates/Coalitions';
 
 import './custom.css';
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
@@ -20,7 +21,8 @@ export default class App extends Component {
       <Layout>
         <Route exact path='/' component={Home} />
         <Route path='/counter' component={Counter} />
-        <Route path='/categories' component={DataGrid} />
+        <Route path='/categories' component={Categories} />
+        <Route path='/coalitions' component={Coalitions} />
         <AuthorizeRoute path='/fetch-data' component={FetchData} />
         <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
       </Layout>
