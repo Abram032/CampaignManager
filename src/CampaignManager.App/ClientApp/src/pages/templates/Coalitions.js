@@ -5,9 +5,9 @@ import { coalitionStore } from '../../stores/coalitionStore';
 
 const apiUri = `${window.location.origin}/api/coalition`;
 const columns = [
-  { name: 'id', title: 'Id' },
-  { name: 'name', title: 'Name' },
-  { name: 'color', title: 'Color' },
+  { dataField: 'id', caption: 'Id', dataType: 'number' },
+  { dataField: 'name', caption: 'Name', dataType: 'string' },
+  { dataField: 'color', caption: 'Color', dataType: 'string' },
 ];
 
 export class Coalitions extends Component {
@@ -30,7 +30,6 @@ export class Coalitions extends Component {
   render() {
     return (
       <>
-        <DataGrid columns={columns} rowDetail={this.rowDetail} apiUri={apiUri} />
         <DataGridv2 columns={columns} rowDetail={this.rowDetail} apiUri={apiUri} store={coalitionStore}/>
       </>
     );

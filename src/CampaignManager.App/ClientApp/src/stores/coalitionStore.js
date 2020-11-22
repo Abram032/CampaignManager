@@ -40,7 +40,11 @@ const sendRequest = async (url, method, data) => {
                 data: response,
                 //totalCount: response.length
             });
-      }
+        }
+        if(method === 'POST') {
+            const response = await result.json();
+            return response;
+        }
     } else {
       throw await result.json();
     }
