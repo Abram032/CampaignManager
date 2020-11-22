@@ -16,29 +16,19 @@ import {
     SearchPanel,
     ColumnChooser, 
     ColumnFixing,
-    MasterDetail,
-    RequiredRule,
-    PatternRule,
-    StringLengthRule
+    MasterDetail
 } from 'devextreme-react/data-grid';
 import DataSource from 'devextreme/data/data_source';
 import { coalitionStore } from '../../../stores/coalitionStore';
 
 function onRowUpdating(options) {
     options.newData = {...options.oldData, ...options.newData };
-    debugger;
 };
 
-export class DataGridv2 extends Component {
+export class DataGridExp extends Component {
     constructor(props) {
         super(props);
-        debugger;
         this.state = {
-            columns: this.props.columns,
-            rows: this.props.rows ?? [],
-            grouping: this.props.grouping ?? [],
-            currentPage: this.props.currentPage ?? 1,
-            pageSize: this.props.pageSize ?? 10,
             dataSource: coalitionStore.store,
             refreshMode: 'reshape',
             autoExpandAll: false,
@@ -53,36 +43,7 @@ export class DataGridv2 extends Component {
         reshapeOnPush: true
     });
 
-    renderColumns = () => {
-        debugger
-        let _columns = [];
-        this.props.columns.forEach(column => {
-            let _column = (
-                <Column 
-                    dataField={column.dataField} 
-                    dataType={column.dataType || 'string'} 
-                    caption={column.caption || column.dataField}
-                    allowEditing={column.isEditable || true} 
-                    visible={column.isVisible || true}
-                >
-                    {column.isRequired ? <RequiredRule /> : null}
-                    {column.hasPattern ? <PatternRule pattern={column.pattern} /> : null}
-                    {column.hasLenghtRule ? <StringLengthRule min={column.minLength} max={column.maxLength} /> : null}
-                </Column>
-            );
-            _columns.push(_column);
-        });
-        return _columns.join('');
-    }
-
-    detail = () => {
-        return(
-            <div>deatils</div>
-        );
-    }
-
     render() {
-        debugger;
         return (
             <>
                 <DataGrid
@@ -96,7 +57,7 @@ export class DataGridv2 extends Component {
                     allowColumnReordering={true}
                     allowColumnResizing={true}
                     columnAutoWidth={true}
-                    //defaultColumns={this.state.columns}
+                    columns={this.props.columns}
                 >
                     <Editing
                         refreshMode={this.state.refreshMode}
@@ -115,24 +76,20 @@ export class DataGridv2 extends Component {
                         placeholder="Search..." />
                     <GroupPanel visible={true} />
                     <Grouping autoExpandAll={this.state.autoExpandAll} />
-                    <Paging defaultPageSize={10} />
+                    <Paging defaultPageSize={1} />
                     <Pager
                         showPageSizeSelector={true}
-                        allowedPageSizes={[5, 10, 25, 50]}
+                        allowedPageSizes={[1, 2, 3, 5, 10, 25, 50]}
                         showInfo={true} 
-                    />
-                    <Scrolling
-                        mode="virtual"
                     />
                     <MasterDetail 
                         enabled={true}
-                        component={this.detail}
+                        component={this.props.detailComponent}
                     />
-                    {this.renderColumns()}
                 </DataGrid>
             </>
         );
     }
 }
 
-export default DataGridv2;
+export default DataGridExp;

@@ -1,9 +1,9 @@
 import CustomStore from 'devextreme/data/custom_store';
 import { sendRequest } from '../libs/utils/utils';
 
-const apiUri = `${window.location.origin}/api/coalition`;
+const apiUri = `${window.location.origin}/api/status`;
 
-export const coalitionStore = new CustomStore({
+export const statusStore = new CustomStore({
     key: 'id',
     load: () => sendRequest(`${apiUri}`),
     insert: (data) => sendRequest(`${apiUri}`, 'POST', JSON.stringify(data)),

@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
-import DataGrid from '../../libs/components/forms/DataGrid';
-import DataGridv2 from '../../libs/components/forms/DataGridv2';
+import DataGridExp from '../../libs/components/forms/DataGridExp';
 import { coalitionStore } from '../../stores/coalitionStore';
+import { CoalitionDetail } from '../../libs/components/details/CoalitionDetail';
 
-const apiUri = `${window.location.origin}/api/coalition`;
 const columns = [
-  { dataField: 'id', caption: 'Id', dataType: 'number' },
-  { dataField: 'name', caption: 'Name', dataType: 'string' },
-  { dataField: 'color', caption: 'Color', dataType: 'string' },
+  { dataField: 'id', caption: 'Id', dataType: 'number', allowEditing: false },
+  { dataField: 'name', caption: 'Name', dataType: 'string', validationRules: [
+      { type: 'required' },
+      { type: 'stringLength', min: 1, max: 100 }
+  ] },
+  { dataField: 'color', caption: 'Color', dataType: 'string', validationRules: [
+      { type: 'stringLength', min: 4, max: 7 },
+      { type: 'pattern', pattern: /^#[A-Fa-f0-9]{3,6}$/g }
+  ]},
 ];
 
 export class Coalitions extends Component {
@@ -15,22 +20,10 @@ export class Coalitions extends Component {
     super(props);
   };
 
-  rowDetail = ({ row }) => (
-    <div>
-      Details for
-      {' '}
-      {row.id}
-      {' - '}
-      {row.name}
-      {' of type '}
-      {row.type}
-    </div>
-  );
-
   render() {
     return (
       <>
-        <DataGridv2 columns={columns} rowDetail={this.rowDetail} apiUri={apiUri} store={coalitionStore}/>
+        <DataGridExp columns={columns} detailComponent={CoalitionDetail} store={coalitionStore}/>
       </>
     );
   }

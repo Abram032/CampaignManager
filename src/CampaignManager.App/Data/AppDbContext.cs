@@ -38,6 +38,7 @@ namespace CampaignManager.App.Data
             modelBuilder.Entity<Coalition>().Property(p => p.Color).HasMaxLength(7).IsRequired(false);
 
             modelBuilder.Entity<Country>().HasKey(p => p.Id);
+            modelBuilder.Entity<Country>().Property(p => p.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Country>().Property(p => p.Name).HasMaxLength(100).IsRequired();
 
             modelBuilder.Entity<Object>().HasKey(p => p.Id);

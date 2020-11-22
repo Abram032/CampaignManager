@@ -9,6 +9,11 @@ import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizat
 import { ApplicationPaths } from './components/api-authorization/ApiAuthorizationConstants';
 import { Categories } from './pages/templates/Categories';
 import { Coalitions } from './pages/templates/Coalitions';
+import { Countries } from './pages/templates/Countries';
+import { Objects } from './pages/templates/Objects';
+import { Services } from './pages/templates/Services';
+import { Statuses } from './pages/templates/Statuses';
+import { Subcategories } from './pages/templates/Subcategories';
 
 import './custom.css';
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
@@ -23,6 +28,11 @@ export default class App extends Component {
         <Route path='/counter' component={Counter} />
         <Route path='/categories' component={Categories} />
         <Route path='/coalitions' component={Coalitions} />
+        <Route path='/countries' component={Countries} />
+        <Route path='/objects' component={Objects} />
+        <Route path='/services' component={Services} />
+        <Route path='/statuses' component={Statuses} />
+        <Route path='/subcategories' component={Subcategories} />
         <AuthorizeRoute path='/fetch-data' component={FetchData} />
         <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
       </Layout>

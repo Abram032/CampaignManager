@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import DataGridExp from '../../libs/components/forms/DataGridExp';
-import { categoryStore } from '../../stores/categoryStore';
+import { statusStore } from '../../stores/statusStore';
 
 const columns = [
   { dataField: 'id', caption: 'Id', dataType: 'number', allowEditing: false },
@@ -10,7 +10,7 @@ const columns = [
   ] }
 ];
 
-export class Categories extends Component {
+export class Statuses extends Component {
   constructor(props) {
     super(props);
   };
@@ -18,10 +18,10 @@ export class Categories extends Component {
   render() {
     return (
       <>
-        <DataGridExp columns={columns} store={categoryStore}/>
+        <DataGridExp columns={columns} store={statusStore}/>
       </>
     );
   }
 };
 
-export default Categories;
+export default Statuses;

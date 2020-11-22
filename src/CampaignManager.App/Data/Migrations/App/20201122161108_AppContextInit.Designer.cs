@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CampaignManager.App.Data.Migrations.App
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201121180926_AppContextInit")]
+    [Migration("20201122161108_AppContextInit")]
     partial class AppContextInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
