@@ -21,7 +21,10 @@ namespace CampaignManager.App.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Object>>> GetAll()
         {
-            var objects = await _context.Objects.ToListAsync();
+            var objects = await _context.Objects
+                .Include(p => p.Category)
+                .Include(p => p.Subcategory)
+                .ToListAsync();
             return objects;
         }
 

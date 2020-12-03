@@ -19,7 +19,6 @@ import {
     MasterDetail
 } from 'devextreme-react/data-grid';
 import DataSource from 'devextreme/data/data_source';
-import { coalitionStore } from '../../../stores/coalitionStore';
 
 function onRowUpdating(options) {
     options.newData = {...options.oldData, ...options.newData };
@@ -29,7 +28,6 @@ export class DataGridExp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            dataSource: coalitionStore.store,
             refreshMode: 'reshape',
             autoExpandAll: false,
             showFilterRow: true,
@@ -57,11 +55,11 @@ export class DataGridExp extends Component {
                     allowColumnReordering={true}
                     allowColumnResizing={true}
                     columnAutoWidth={true}
-                    columns={this.props.columns}
+                    columns={this.props.useCustomColumns ? null : this.props.columns}
                 >
                     <Editing
                         refreshMode={this.state.refreshMode}
-                        mode="cell"
+                        mode="form"
                         allowAdding={true}
                         allowDeleting={true}
                         allowUpdating={true}
@@ -76,7 +74,7 @@ export class DataGridExp extends Component {
                         placeholder="Search..." />
                     <GroupPanel visible={true} />
                     <Grouping autoExpandAll={this.state.autoExpandAll} />
-                    <Paging defaultPageSize={1} />
+                    <Paging defaultPageSize={10} />
                     <Pager
                         showPageSizeSelector={true}
                         allowedPageSizes={[1, 2, 3, 5, 10, 25, 50]}
@@ -86,6 +84,7 @@ export class DataGridExp extends Component {
                         enabled={true}
                         component={this.props.detailComponent}
                     />
+                    {this.props.useCustomColumns ? this.props.columns : null}
                 </DataGrid>
             </>
         );
