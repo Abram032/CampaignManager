@@ -28,6 +28,7 @@ export const sendRequest = async (url, method, data) => {
     if(result.ok) {
         if(method === 'GET') {
             const response = await result.json();
+            console.log(method, url, response);
             return ({
                 data: response,
                 //totalCount: response.length

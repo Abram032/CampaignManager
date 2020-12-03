@@ -42,6 +42,10 @@ namespace CampaignManager.App.Controllers
         [HttpPost]
         public async Task<ActionResult<Object>> Post(Object @object)
         {
+            var category = await _context.Categories.FindAsync(@object.Category.Id);
+            var subcategory = await _context.Subcategories.FindAsync(@object.Subcategory.Id);
+            @object.Category = category;
+            @object.Subcategory = subcategory;
             await _context.Objects.AddAsync(@object);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(Get), new { id = @object.Id }, @object);

@@ -42,37 +42,37 @@ const types = {
 }
 
 const columns = (
-  <>
-    <Column dataField="id" dataType="number" caption="Id" allowEditing="false"></Column>
+  [
+    <Column dataField="id" dataType="number" caption="Id" allowEditing="false"></Column>,
     <Column dataField="name" dataType="string" caption="Name">
       <RequiredRule />
       <StringLengthRule min="1" max="100" />
-    </Column>
+    </Column>,
     <Column dataField="type" dataType="number" caption="Type">
       <Lookup 
         dataSource={types}
-        value="id"
+        valueExpr="id"
         displayExpr="name"
       />
       <RequiredRule />
-    </Column>
+    </Column>,
     <Column dataField="category" dataType="number" caption="Category">
       <Lookup 
         dataSource={categoryStore}
-        value="id"
+        valueExpr="id"
         displayExpr="name"
       />
       <RequiredRule />
-    </Column>
+    </Column>,
     <Column dataField="subcategory" dataType="number" caption="Subcategory">
       <Lookup 
         dataSource={subcategoryStore}
-        value="id"
+        valueExpr="id"
         displayExpr="name"
       />
       <RequiredRule />
-    </Column>
-  </>
+    </Column>,
+  ]
 );
 
 export class Objects extends Component {

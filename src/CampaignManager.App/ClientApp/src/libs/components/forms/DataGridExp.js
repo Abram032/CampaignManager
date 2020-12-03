@@ -55,7 +55,6 @@ export class DataGridExp extends Component {
                     allowColumnReordering={true}
                     allowColumnResizing={true}
                     columnAutoWidth={true}
-                    columns={this.props.useCustomColumns ? null : this.props.columns}
                 >
                     <Editing
                         refreshMode={this.state.refreshMode}
@@ -84,7 +83,7 @@ export class DataGridExp extends Component {
                         enabled={true}
                         component={this.props.detailComponent}
                     />
-                    {this.props.useCustomColumns ? this.props.columns : null}
+                    {this.props.columns}
                 </DataGrid>
             </>
         );
