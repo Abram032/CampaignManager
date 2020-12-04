@@ -5,9 +5,9 @@ const apiUri = `${window.location.origin}/api/object`;
 
 export const objectStore = new CustomStore({
     key: 'id',
-    load: () => parseData(sendRequest(`${apiUri}`)),
-    insert: (data) => sendRequest(`${apiUri}`, 'POST', prepareData(data)),
-    update: (key, data) => sendRequest(`${apiUri}/${key}`, 'PUT', prepareData(data)),
+    load: () => sendRequest(`${apiUri}`),
+    insert: (data) => sendRequest(`${apiUri}`, 'POST', JSON.stringify(data)),
+    update: (key, data) => sendRequest(`${apiUri}/${key}`, 'PUT', JSON.stringify(data)),
     remove: (key) => sendRequest(`${apiUri}/${key}`, 'DELETE'),
 });
 
@@ -18,8 +18,8 @@ const prepareData = (data) => {
 
 const parseData = ({ data }) => {
     debugger
-    data.category = data.category.id;
-    data.subcategory = data.subcategory.id;
+    data.category = data.categoryId;
+    data.subcategory = data.subcategoryId;
     return {
         data: data
     };

@@ -48,15 +48,14 @@ const columns = (
       <RequiredRule />
       <StringLengthRule min="1" max="100" />
     </Column>,
-    <Column dataField="type" dataType="number" caption="Type">
+    <Column dataField="type" caption="Type">
       <Lookup 
         dataSource={types}
-        valueExpr="id"
         displayExpr="name"
       />
       <RequiredRule />
     </Column>,
-    <Column dataField="category" dataType="number" caption="Category">
+    <Column dataField="categoryId" dataType="number" caption="Category">
       <Lookup 
         dataSource={categoryStore}
         valueExpr="id"
@@ -64,7 +63,7 @@ const columns = (
       />
       <RequiredRule />
     </Column>,
-    <Column dataField="subcategory" dataType="number" caption="Subcategory">
+    <Column dataField="subcategoryId" dataType="number" caption="Subcategory">
       <Lookup 
         dataSource={subcategoryStore}
         valueExpr="id"

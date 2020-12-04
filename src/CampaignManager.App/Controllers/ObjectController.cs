@@ -19,63 +19,82 @@ namespace CampaignManager.App.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Object>>> GetAll()
+        public async Task<ActionResult<List<ObjectDTO>>> GetAll()
         {
             var objects = await _context.Objects
                 .Include(p => p.Category)
                 .Include(p => p.Subcategory)
                 .ToListAsync();
-            return objects;
+
+            return objects.Select(p => new ObjectDTO {
+                Id = p.Id,
+                Name = p.Name,
+                CategoryId = p.Category.Id,
+                SubcategoryId = p.Subcategory.Id,
+                Type = p.Type,
+                DefaultCost = p.DefaultCost
+            }).ToList();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Object>> Get(int id)
+        public async Task<ActionResult<ObjectDTO>> Get(int id)
         {
-            var @object = await _context.Objects.FindAsync(id);
+            var @object = await _context.Objects
+                .Include(p => p.Category)
+                .Include(p => p.Subcategory)
+                .FirstOrDefaultAsync(p => p.Id == id);
+                
             if(@object == null) {
                 return NotFound();
             }
 
-            return @object;
+            return new ObjectDTO {
+                Id = @object.Id,
+                Name = @object.Name,
+                CategoryId = @object.Category.Id,
+                SubcategoryId = @object.Subcategory.Id,
+                Type = @object.Type,
+                DefaultCost = @object.DefaultCost
+            };
         }
 
         [HttpPost]
-        public async Task<ActionResult<Object>> Post(Object @object)
+        public async Task<ActionResult<ObjectDTO>> Post(ObjectDTO @object)
         {
-            var category = await _context.Categories.FindAsync(@object.Category.Id);
-            var subcategory = await _context.Subcategories.FindAsync(@object.Subcategory.Id);
-            @object.Category = category;
-            @object.Subcategory = subcategory;
-            await _context.Objects.AddAsync(@object);
+            var _object = new Object {
+                Name = @object.Name,
+                Category = await _context.Categories.FirstOrDefaultAsync(p => p.Id == @object.CategoryId),
+                Subcategory = await _context.Subcategories.FirstOrDefaultAsync(p => p.Id == @object.SubcategoryId),
+                Type = @object.Type,
+                DefaultCost = @object.DefaultCost
+            };
+
+            await _context.Objects.AddAsync(_object);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = @object.Id }, @object);
+            return CreatedAtAction(nameof(Get), new { id = _object.Id }, _object);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Object @object)
+        public async Task<IActionResult> Put(int id, ObjectDTO @object)
         {
             if (id != @object.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(@object).State = EntityState.Modified;
+            var _object = await _context.Objects
+                .Include(p => p.Category)
+                .Include(p => p.Subcategory)
+                .FirstOrDefaultAsync(p => p.Id == id);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (await ObjectExists(id))
-                {
-                    throw;
-                }
-                else
-                {
-                    return NotFound();
-                }
-            }
+            _object.Name = @object.Name;
+            _object.Category = await _context.Categories.FirstOrDefaultAsync(p => p.Id == @object.CategoryId);
+            _object.Subcategory = await _context.Subcategories.FirstOrDefaultAsync(p => p.Id == @object.SubcategoryId);
+            _object.Type = @object.Type;
+            _object.DefaultCost = @object.DefaultCost;
+            
+            _context.Objects.Update(_object);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
