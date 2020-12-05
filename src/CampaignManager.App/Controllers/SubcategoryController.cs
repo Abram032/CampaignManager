@@ -55,14 +55,18 @@ namespace CampaignManager.App.Controllers
         [HttpPost]
         public async Task<ActionResult<SubcategoryDTO>> Post(SubcategoryDTO subcategory)
         {
+            var category = await _context.Categories
+                .Include(p => p.Subcategories)
+                .FirstOrDefaultAsync(p => p.Id == subcategory.CategoryId);
+            
             var _subcategory = new Subcategory {
                 Name = subcategory.Name,
-                Category = await _context.Categories.FirstOrDefaultAsync(p => p.Id == subcategory.CategoryId)
+                Category = category
             };
 
             await _context.Subcategories.AddAsync(_subcategory);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = _subcategory.Id }, _subcategory);
+            return CreatedAtAction(nameof(Get), new { id = _subcategory.Id }, subcategory);
         }
 
         [HttpPut("{id}")]

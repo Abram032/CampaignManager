@@ -33,7 +33,12 @@ const columns = [
       valueExpr: 'id',
       displayExpr: 'name'
   }},
-  { dataField: 'categoryId', caption: 'Category', validationRules: [
+  { dataField: 'categoryId', caption: 'Category', 
+    setCellValue: function(rowData, value) {
+      rowData.categoryId = value;
+      rowData.subcategoryId = null;
+    },
+    validationRules: [
       { type: 'required' }
     ], lookup: {
       dataSource: categoryStore,
@@ -43,10 +48,15 @@ const columns = [
   { dataField: 'subcategoryId', caption: 'Subcategory', validationRules: [
       { type: 'required' }
     ], lookup: {
-      dataSource: subcategoryStore,
+      dataSource: function(options) {
+        return {
+          store: subcategoryStore,
+          filter: options.data ? ['categoryId', '=', options.data.categoryId] : null
+        };
+      },
       valueExpr: 'id',
       displayExpr: 'name'
-    }},
+  }},
   { dataField: 'defaultCost', caption: 'Default cost', dataType: 'number', validationRules: [
     { type: 'range', min: 0, max: 79228162514264337593543950335 }
   ]}

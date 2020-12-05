@@ -73,7 +73,7 @@ namespace CampaignManager.App.Controllers
 
             await _context.Entities.AddAsync(_entity);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = _entity.Id }, _entity);
+            return CreatedAtAction(nameof(Get), new { id = _entity.Id }, entity);
         }
 
         [HttpPut("{id}")]
