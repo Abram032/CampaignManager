@@ -21,56 +21,67 @@ namespace CampaignManager.App.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Subcategory>>> GetAll()
+        public async Task<ActionResult<List<SubcategoryDTO>>> GetAll()
         {
-            var subcategories = await _context.Subcategories.ToListAsync();
-            return subcategories;
+            var subcategories = await _context.Subcategories
+                .Include(p => p.Category)
+                .ToListAsync();
+
+            return subcategories.Select(p => new SubcategoryDTO {
+                Id = p.Id,
+                Name = p.Name,
+                CategoryId = p.Category.Id
+            }).ToList();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Subcategory>> Get(int id)
+        public async Task<ActionResult<SubcategoryDTO>> Get(int id)
         {
-            var subcategory = await _context.Subcategories.FindAsync(id);
-            if(subcategory == null) {
+            var entity = await _context.Entities
+                .Include(p => p.Category)
+                .FirstOrDefaultAsync(p => p.Id == id);
+                
+            if(entity == null) {
                 return NotFound();
             }
 
-            return subcategory;
+            return new SubcategoryDTO {
+                Id = entity.Id,
+                Name = entity.Name,
+                CategoryId = entity.Category.Id
+            };
         }
 
         [HttpPost]
-        public async Task<ActionResult<Subcategory>> Post(Subcategory subcategory)
+        public async Task<ActionResult<SubcategoryDTO>> Post(SubcategoryDTO subcategory)
         {
-            await _context.Subcategories.AddAsync(subcategory);
+            var _subcategory = new Subcategory {
+                Name = subcategory.Name,
+                Category = await _context.Categories.FirstOrDefaultAsync(p => p.Id == subcategory.CategoryId)
+            };
+
+            await _context.Subcategories.AddAsync(_subcategory);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = subcategory.Id }, subcategory);
+            return CreatedAtAction(nameof(Get), new { id = _subcategory.Id }, _subcategory);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Subcategory subcategory)
+        public async Task<IActionResult> Put(int id, SubcategoryDTO subcategory)
         {
             if (id != subcategory.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(subcategory).State = EntityState.Modified;
+            var _subcategory = await _context.Subcategories
+                .Include(p => p.Category)
+                .FirstOrDefaultAsync(p => p.Id == id);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (await SubcategoryExists(id))
-                {
-                    throw;
-                }
-                else
-                {
-                    return NotFound();
-                }
-            }
+            _subcategory.Name = subcategory.Name;
+            _subcategory.Category = await _context.Categories.FirstOrDefaultAsync(p => p.Id == subcategory.CategoryId);
+            
+            _context.Subcategories.Update(_subcategory);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -89,8 +100,5 @@ namespace CampaignManager.App.Controllers
 
             return NoContent();
         }
-
-        private async Task<bool> SubcategoryExists(int id) 
-            => await _context.Subcategories.AnyAsync(p => p.Id == id);
     }
 }

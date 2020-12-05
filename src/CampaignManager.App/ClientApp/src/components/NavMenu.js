@@ -52,9 +52,8 @@ export class NavMenu extends Component {
           <DropdownItem href="/categories">Categories</DropdownItem>
           <DropdownItem href="/coalitions">Coalitions</DropdownItem>
           <DropdownItem href="/countries">Countries</DropdownItem>
-          <DropdownItem href="/objects">Objects</DropdownItem>
+          <DropdownItem href="/entities">Entities</DropdownItem>
           <DropdownItem href="/services">Services</DropdownItem>
-          <DropdownItem href="/statuses">Statuses</DropdownItem>
           <DropdownItem href="/subcategories">Subcategories</DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>

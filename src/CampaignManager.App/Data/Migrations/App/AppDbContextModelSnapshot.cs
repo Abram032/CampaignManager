@@ -56,6 +56,75 @@ namespace CampaignManager.App.Data.Migrations.App
                     b.ToTable("Campaigns");
                 });
 
+            modelBuilder.Entity("CampaignManager.Models.CampaignEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("AvailableAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("CampaignId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EntityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FactionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CampaignId");
+
+                    b.HasIndex("EntityId");
+
+                    b.HasIndex("FactionId");
+
+                    b.HasIndex("LocationId");
+
+                    b.ToTable("CampaignEntities");
+                });
+
+            modelBuilder.Entity("CampaignManager.Models.CampaignEntityCost", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("CampaignId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Cost")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<int>("EntityId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CampaignId");
+
+                    b.HasIndex("EntityId");
+
+                    b.ToTable("CampaignEntityCosts");
+                });
+
             modelBuilder.Entity("CampaignManager.Models.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -98,6 +167,10 @@ namespace CampaignManager.App.Data.Migrations.App
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("Flag")
+                        .HasColumnType("varchar(20) CHARACTER SET utf8mb4")
+                        .HasMaxLength(20);
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
@@ -106,6 +179,38 @@ namespace CampaignManager.App.Data.Migrations.App
                     b.HasKey("Id");
 
                     b.ToTable("Countries");
+                });
+
+            modelBuilder.Entity("CampaignManager.Models.Entity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("DefaultCost")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
+                        .HasMaxLength(100);
+
+                    b.Property<int?>("SubcategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("SubcategoryId");
+
+                    b.ToTable("Entities");
                 });
 
             modelBuilder.Entity("CampaignManager.Models.Faction", b =>
@@ -142,53 +247,6 @@ namespace CampaignManager.App.Data.Migrations.App
                     b.ToTable("Factions");
                 });
 
-            modelBuilder.Entity("CampaignManager.Models.Item", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("AvailableAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("CampaignId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FactionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LocationId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
-                        .HasMaxLength(100);
-
-                    b.Property<int>("ObjectId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("StatusId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CampaignId");
-
-                    b.HasIndex("FactionId");
-
-                    b.HasIndex("LocationId");
-
-                    b.HasIndex("ObjectId");
-
-                    b.HasIndex("StatusId");
-
-                    b.ToTable("Items");
-                });
-
             modelBuilder.Entity("CampaignManager.Models.Location", b =>
                 {
                     b.Property<int>("Id")
@@ -216,7 +274,7 @@ namespace CampaignManager.App.Data.Migrations.App
                         .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .HasMaxLength(100);
 
-                    b.Property<int?>("StatusId")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -224,8 +282,6 @@ namespace CampaignManager.App.Data.Migrations.App
                     b.HasIndex("CampaignId");
 
                     b.HasIndex("FactionId");
-
-                    b.HasIndex("StatusId");
 
                     b.ToTable("Locations");
                 });
@@ -267,38 +323,6 @@ namespace CampaignManager.App.Data.Migrations.App
                     b.HasIndex("FactionId");
 
                     b.ToTable("Missions");
-                });
-
-            modelBuilder.Entity("CampaignManager.Models.Object", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("DefaultCost")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
-                        .HasMaxLength(100);
-
-                    b.Property<int?>("SubcategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("SubcategoryId");
-
-                    b.ToTable("Objects");
                 });
 
             modelBuilder.Entity("CampaignManager.Models.Objective", b =>
@@ -350,28 +374,15 @@ namespace CampaignManager.App.Data.Migrations.App
                     b.ToTable("Services");
                 });
 
-            modelBuilder.Entity("CampaignManager.Models.Status", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
-                        .HasMaxLength(100);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Statuses");
-                });
-
             modelBuilder.Entity("CampaignManager.Models.Subcategory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
@@ -379,7 +390,62 @@ namespace CampaignManager.App.Data.Migrations.App
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Subcategories");
+                });
+
+            modelBuilder.Entity("CampaignManager.Models.CampaignEntity", b =>
+                {
+                    b.HasOne("CampaignManager.Models.Campaign", "Campaign")
+                        .WithMany()
+                        .HasForeignKey("CampaignId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CampaignManager.Models.Entity", "Entity")
+                        .WithMany()
+                        .HasForeignKey("EntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CampaignManager.Models.Faction", "Faction")
+                        .WithMany()
+                        .HasForeignKey("FactionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CampaignManager.Models.Location", "Location")
+                        .WithMany("Entities")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CampaignManager.Models.CampaignEntityCost", b =>
+                {
+                    b.HasOne("CampaignManager.Models.Campaign", "Campaign")
+                        .WithMany()
+                        .HasForeignKey("CampaignId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CampaignManager.Models.Entity", "Entity")
+                        .WithMany()
+                        .HasForeignKey("EntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CampaignManager.Models.Entity", b =>
+                {
+                    b.HasOne("CampaignManager.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("CampaignManager.Models.Subcategory", "Subcategory")
+                        .WithMany()
+                        .HasForeignKey("SubcategoryId");
                 });
 
             modelBuilder.Entity("CampaignManager.Models.Faction", b =>
@@ -403,37 +469,6 @@ namespace CampaignManager.App.Data.Migrations.App
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CampaignManager.Models.Item", b =>
-                {
-                    b.HasOne("CampaignManager.Models.Campaign", "Campaign")
-                        .WithMany()
-                        .HasForeignKey("CampaignId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CampaignManager.Models.Faction", "Faction")
-                        .WithMany()
-                        .HasForeignKey("FactionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CampaignManager.Models.Location", "Location")
-                        .WithMany("Items")
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CampaignManager.Models.Object", "Object")
-                        .WithMany()
-                        .HasForeignKey("ObjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CampaignManager.Models.Status", "Status")
-                        .WithMany()
-                        .HasForeignKey("StatusId");
-                });
-
             modelBuilder.Entity("CampaignManager.Models.Location", b =>
                 {
                     b.HasOne("CampaignManager.Models.Campaign", "Campaign")
@@ -445,10 +480,6 @@ namespace CampaignManager.App.Data.Migrations.App
                     b.HasOne("CampaignManager.Models.Faction", "Faction")
                         .WithMany("Locations")
                         .HasForeignKey("FactionId");
-
-                    b.HasOne("CampaignManager.Models.Status", "Status")
-                        .WithMany()
-                        .HasForeignKey("StatusId");
                 });
 
             modelBuilder.Entity("CampaignManager.Models.Mission", b =>
@@ -466,17 +497,6 @@ namespace CampaignManager.App.Data.Migrations.App
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CampaignManager.Models.Object", b =>
-                {
-                    b.HasOne("CampaignManager.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
-
-                    b.HasOne("CampaignManager.Models.Subcategory", "Subcategory")
-                        .WithMany()
-                        .HasForeignKey("SubcategoryId");
-                });
-
             modelBuilder.Entity("CampaignManager.Models.Objective", b =>
                 {
                     b.HasOne("CampaignManager.Models.Mission", null)
@@ -489,6 +509,15 @@ namespace CampaignManager.App.Data.Migrations.App
                     b.HasOne("CampaignManager.Models.Location", null)
                         .WithMany("Services")
                         .HasForeignKey("LocationId");
+                });
+
+            modelBuilder.Entity("CampaignManager.Models.Subcategory", b =>
+                {
+                    b.HasOne("CampaignManager.Models.Category", "Category")
+                        .WithMany("Subcategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

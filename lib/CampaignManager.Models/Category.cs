@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
-using CampaignManager.Models.Base;
 
 namespace CampaignManager.Models
 {
-    public class Category : Entity
+    public class Category
     {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public List<Subcategory> Subcategories { get; set; }
     }
 }

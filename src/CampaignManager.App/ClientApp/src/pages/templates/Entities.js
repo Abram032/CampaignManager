@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import DataGridExp from '../../libs/components/forms/DataGridExp';
-import { objectStore } from '../../stores/objectStore';
+import { entityStore } from '../../stores/entityStore';
 import { categoryStore } from '../../stores/categoryStore';
 import { subcategoryStore } from '../../stores/subcategoryStore';
 
@@ -52,7 +52,7 @@ const columns = [
   ]}
 ];
 
-export class Objects extends Component {
+export class Entities extends Component {
   constructor(props) {
     super(props);
   };
@@ -60,11 +60,11 @@ export class Objects extends Component {
   render() {
     return (
       <>
-        <h1 className="display-4">Objects</h1>
-        <DataGridExp columns={columns} store={objectStore}/>
+        <h1 className="display-4">Entities</h1>
+        <DataGridExp columns={columns} store={entityStore}/>
       </>
     );
   }
 };
 
-export default Objects;
+export default Entities;

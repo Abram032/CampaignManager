@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
-using CampaignManager.Models.Base;
 
 namespace CampaignManager.Models
 {
-    public class Coalition : Entity
+    public class Coalition
     {
+        public int Id { get; set; }
+        public string Name { get; set; }
         public string Color { get; set; }
     }
 }

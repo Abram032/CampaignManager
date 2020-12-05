@@ -7,6 +7,9 @@ const columns = [
   { dataField: 'name', caption: 'Name', dataType: 'string', validationRules: [
     { type: 'required' },
     { type: 'stringLength', min: 1, max: 100 }
+  ]},
+  { dataField: 'flag', caption: 'Flag', dataType: 'string', validationRules: [
+    { type: 'stringLength', min: 2, max: 20 }
   ]}
 ];
 

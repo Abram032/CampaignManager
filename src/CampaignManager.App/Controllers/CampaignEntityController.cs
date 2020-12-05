@@ -12,49 +12,49 @@ namespace CampaignManager.App.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class StatusController : ControllerBase
+    public class CampaignEntityController : ControllerBase
     {
         private readonly AppDbContext _context;
-        public StatusController(AppDbContext context)
+        public CampaignEntityController(AppDbContext context)
         {
             _context = context;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Status>>> GetAll()
+        public async Task<ActionResult<List<CampaignEntity>>> GetAll()
         {
-            var statuses = await _context.Statuses.ToListAsync();
-            return statuses;
+            var entities = await _context.CampaignEntities.ToListAsync();
+            return entities;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Status>> Get(int id)
+        public async Task<ActionResult<CampaignEntity>> Get(int id)
         {
-            var status = await _context.Statuses.FindAsync(id);
-            if(status == null) {
+            var entity = await _context.CampaignEntities.FindAsync(id);
+            if(entity == null) {
                 return NotFound();
             }
 
-            return status;
+            return entity;
         }
 
         [HttpPost]
-        public async Task<ActionResult<Status>> Post(Status status)
+        public async Task<ActionResult<CampaignEntity>> Post(CampaignEntity entity)
         {
-            await _context.Statuses.AddAsync(status);
+            await _context.CampaignEntities.AddAsync(entity);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = status.Id }, status);
+            return CreatedAtAction(nameof(Get), new { id = entity.Id }, entity);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Status status)
+        public async Task<IActionResult> Put(int id, CampaignEntity entity)
         {
-            if (id != status.Id)
+            if (id != entity.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(status).State = EntityState.Modified;
+            _context.Entry(entity).State = EntityState.Modified;
 
             try
             {
@@ -62,7 +62,7 @@ namespace CampaignManager.App.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (await StatusExists(id))
+                if (await CampaignEntityExists(id))
                 {
                     throw;
                 }
@@ -78,19 +78,19 @@ namespace CampaignManager.App.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var status = await _context.Statuses.FindAsync(id);
-            if (status == null)
+            var entity = await _context.CampaignEntities.FindAsync(id);
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            _context.Statuses.Remove(status);
+            _context.CampaignEntities.Remove(entity);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private async Task<bool> StatusExists(int id) 
-            => await _context.Statuses.AnyAsync(p => p.Id == id);
+        private async Task<bool> CampaignEntityExists(int id) 
+            => await _context.CampaignEntities.AnyAsync(p => p.Id == id);
     }
 }

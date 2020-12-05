@@ -60,24 +60,12 @@ namespace CampaignManager.App.Data.Migrations.App
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(maxLength: 100, nullable: false)
+                    Name = table.Column<string>(maxLength: 100, nullable: false),
+                    Flag = table.Column<string>(maxLength: 20, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Countries", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Statuses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(maxLength: 100, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Statuses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -86,11 +74,18 @@ namespace CampaignManager.App.Data.Migrations.App
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(maxLength: 100, nullable: false)
+                    Name = table.Column<string>(maxLength: 100, nullable: false),
+                    CategoryId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Subcategories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Subcategories_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -129,7 +124,7 @@ namespace CampaignManager.App.Data.Migrations.App
                 });
 
             migrationBuilder.CreateTable(
-                name: "Objects",
+                name: "Entities",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -142,15 +137,15 @@ namespace CampaignManager.App.Data.Migrations.App
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Objects", x => x.Id);
+                    table.PrimaryKey("PK_Entities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Objects_Categories_CategoryId",
+                        name: "FK_Entities_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Objects_Subcategories_SubcategoryId",
+                        name: "FK_Entities_Subcategories_SubcategoryId",
                         column: x => x.SubcategoryId,
                         principalTable: "Subcategories",
                         principalColumn: "Id",
@@ -169,7 +164,7 @@ namespace CampaignManager.App.Data.Migrations.App
                     FactionId = table.Column<int>(nullable: true),
                     Longitude = table.Column<double>(nullable: true),
                     Latitude = table.Column<double>(nullable: true),
-                    StatusId = table.Column<int>(nullable: true)
+                    Status = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -184,12 +179,6 @@ namespace CampaignManager.App.Data.Migrations.App
                         name: "FK_Locations_Factions_FactionId",
                         column: x => x.FactionId,
                         principalTable: "Factions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Locations_Statuses_StatusId",
-                        column: x => x.StatusId,
-                        principalTable: "Statuses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -226,7 +215,34 @@ namespace CampaignManager.App.Data.Migrations.App
                 });
 
             migrationBuilder.CreateTable(
-                name: "Items",
+                name: "CampaignEntityCosts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CampaignId = table.Column<int>(nullable: false),
+                    EntityId = table.Column<int>(nullable: false),
+                    Cost = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CampaignEntityCosts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CampaignEntityCosts_Campaigns_CampaignId",
+                        column: x => x.CampaignId,
+                        principalTable: "Campaigns",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CampaignEntityCosts_Entities_EntityId",
+                        column: x => x.EntityId,
+                        principalTable: "Entities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CampaignEntities",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -234,45 +250,39 @@ namespace CampaignManager.App.Data.Migrations.App
                     Name = table.Column<string>(maxLength: 100, nullable: false),
                     CampaignId = table.Column<int>(nullable: false),
                     LocationId = table.Column<int>(nullable: false),
-                    ObjectId = table.Column<int>(nullable: false),
-                    StatusId = table.Column<int>(nullable: true),
+                    EntityId = table.Column<int>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
                     FactionId = table.Column<int>(nullable: false),
                     AvailableAt = table.Column<DateTime>(nullable: true),
                     Count = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Items", x => x.Id);
+                    table.PrimaryKey("PK_CampaignEntities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Items_Campaigns_CampaignId",
+                        name: "FK_CampaignEntities_Campaigns_CampaignId",
                         column: x => x.CampaignId,
                         principalTable: "Campaigns",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Items_Factions_FactionId",
+                        name: "FK_CampaignEntities_Entities_EntityId",
+                        column: x => x.EntityId,
+                        principalTable: "Entities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CampaignEntities_Factions_FactionId",
                         column: x => x.FactionId,
                         principalTable: "Factions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Items_Locations_LocationId",
+                        name: "FK_CampaignEntities_Locations_LocationId",
                         column: x => x.LocationId,
                         principalTable: "Locations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Items_Objects_ObjectId",
-                        column: x => x.ObjectId,
-                        principalTable: "Objects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Items_Statuses_StatusId",
-                        column: x => x.StatusId,
-                        principalTable: "Statuses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -318,6 +328,46 @@ namespace CampaignManager.App.Data.Migrations.App
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_CampaignEntities_CampaignId",
+                table: "CampaignEntities",
+                column: "CampaignId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CampaignEntities_EntityId",
+                table: "CampaignEntities",
+                column: "EntityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CampaignEntities_FactionId",
+                table: "CampaignEntities",
+                column: "FactionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CampaignEntities_LocationId",
+                table: "CampaignEntities",
+                column: "LocationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CampaignEntityCosts_CampaignId",
+                table: "CampaignEntityCosts",
+                column: "CampaignId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CampaignEntityCosts_EntityId",
+                table: "CampaignEntityCosts",
+                column: "EntityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Entities_CategoryId",
+                table: "Entities",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Entities_SubcategoryId",
+                table: "Entities",
+                column: "SubcategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Factions_CampaignId",
                 table: "Factions",
                 column: "CampaignId");
@@ -333,31 +383,6 @@ namespace CampaignManager.App.Data.Migrations.App
                 column: "CountryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Items_CampaignId",
-                table: "Items",
-                column: "CampaignId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Items_FactionId",
-                table: "Items",
-                column: "FactionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Items_LocationId",
-                table: "Items",
-                column: "LocationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Items_ObjectId",
-                table: "Items",
-                column: "ObjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Items_StatusId",
-                table: "Items",
-                column: "StatusId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Locations_CampaignId",
                 table: "Locations",
                 column: "CampaignId");
@@ -366,11 +391,6 @@ namespace CampaignManager.App.Data.Migrations.App
                 name: "IX_Locations_FactionId",
                 table: "Locations",
                 column: "FactionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Locations_StatusId",
-                table: "Locations",
-                column: "StatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Missions_CampaignId",
@@ -388,25 +408,23 @@ namespace CampaignManager.App.Data.Migrations.App
                 column: "MissionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Objects_CategoryId",
-                table: "Objects",
-                column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Objects_SubcategoryId",
-                table: "Objects",
-                column: "SubcategoryId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Services_LocationId",
                 table: "Services",
                 column: "LocationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Subcategories_CategoryId",
+                table: "Subcategories",
+                column: "CategoryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Items");
+                name: "CampaignEntities");
+
+            migrationBuilder.DropTable(
+                name: "CampaignEntityCosts");
 
             migrationBuilder.DropTable(
                 name: "Objectives");
@@ -415,7 +433,7 @@ namespace CampaignManager.App.Data.Migrations.App
                 name: "Services");
 
             migrationBuilder.DropTable(
-                name: "Objects");
+                name: "Entities");
 
             migrationBuilder.DropTable(
                 name: "Missions");
@@ -424,16 +442,13 @@ namespace CampaignManager.App.Data.Migrations.App
                 name: "Locations");
 
             migrationBuilder.DropTable(
-                name: "Categories");
-
-            migrationBuilder.DropTable(
                 name: "Subcategories");
 
             migrationBuilder.DropTable(
                 name: "Factions");
 
             migrationBuilder.DropTable(
-                name: "Statuses");
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Campaigns");

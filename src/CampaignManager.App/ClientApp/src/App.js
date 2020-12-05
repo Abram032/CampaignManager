@@ -8,9 +8,8 @@ import { ApplicationPaths } from './components/api-authorization/ApiAuthorizatio
 import { Categories } from './pages/templates/Categories';
 import { Coalitions } from './pages/templates/Coalitions';
 import { Countries } from './pages/templates/Countries';
-import { Objects } from './pages/templates/Objects';
+import { Entities } from './pages/templates/Entities';
 import { Services } from './pages/templates/Services';
-import { Statuses } from './pages/templates/Statuses';
 import { Subcategories } from './pages/templates/Subcategories';
 
 import './custom.css';
@@ -28,9 +27,8 @@ export default class App extends Component {
         <AuthorizeRoute path='/categories' component={Categories} />
         <AuthorizeRoute path='/coalitions' component={Coalitions} />
         <AuthorizeRoute path='/countries' component={Countries} />
-        <AuthorizeRoute path='/objects' component={Objects} />
+        <AuthorizeRoute path='/entities' component={Entities} />
         <AuthorizeRoute path='/services' component={Services} />
-        <AuthorizeRoute path='/statuses' component={Statuses} />
         <AuthorizeRoute path='/subcategories' component={Subcategories} />
         <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
       </Layout>

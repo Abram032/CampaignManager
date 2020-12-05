@@ -1,9 +1,9 @@
 import CustomStore from 'devextreme/data/custom_store';
 import { sendRequest } from '../libs/utils/utils';
 
-const apiUri = `${window.location.origin}/api/object`;
+const apiUri = `${window.location.origin}/api/entity`;
 
-export const objectStore = new CustomStore({
+export const entityStore = new CustomStore({
     key: 'id',
     byKey: (key) => sendRequest(`${apiUri}/${key}`),
     load: () => sendRequest(`${apiUri}`),

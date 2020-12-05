@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
-using CampaignManager.Models.Base;
 
 namespace CampaignManager.Models
 {
-    public class Mission : CampaignEntity
+    public class Mission
     {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public Campaign Campaign { get; set; }
         public string Description { get; set; }
         public Faction Faction { get; set; }
         public DateTime StartDate { get; set; }
