@@ -15,6 +15,7 @@ import { Subcategories } from './pages/templates/Subcategories';
 
 import './custom.css';
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
+import CreateCampaign from './pages/campaigns/CreateCampaign';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -23,6 +24,7 @@ export default class App extends Component {
     return (
       <Layout>
         <Route exact path='/' component={Home} />
+        <AuthorizeRoute path='/campaign/create' component={CreateCampaign} />
         <AuthorizeRoute path='/categories' component={Categories} />
         <AuthorizeRoute path='/coalitions' component={Coalitions} />
         <AuthorizeRoute path='/countries' component={Countries} />

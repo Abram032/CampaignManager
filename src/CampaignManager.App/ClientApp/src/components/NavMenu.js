@@ -61,6 +61,21 @@ export class NavMenu extends Component {
     );
   }
 
+  renderCampaigns() {
+    if(!this.state.isAuthenticated) {
+      return null;
+    }
+
+    return (
+      <UncontrolledDropdown nav inNavbar>
+        <DropdownToggle className="nav-link" nav caret>Campaigns</DropdownToggle>
+        <DropdownMenu>
+          <DropdownItem href="/campaign/create">Create campaign</DropdownItem>
+        </DropdownMenu>
+      </UncontrolledDropdown>
+    );
+  }
+
   render () {
     return (
       <header>
@@ -73,6 +88,7 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
                 </NavItem>
+                {this.renderCampaigns()}
                 {this.renderTemplates()}
                 <LoginMenu>
                 </LoginMenu>
