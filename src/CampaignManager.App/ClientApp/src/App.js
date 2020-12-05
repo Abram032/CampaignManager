@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
 import { ApplicationPaths } from './components/api-authorization/ApiAuthorizationConstants';
@@ -25,7 +23,6 @@ export default class App extends Component {
     return (
       <Layout>
         <Route exact path='/' component={Home} />
-        <AuthorizeRoute path='/counter' component={Counter} />
         <AuthorizeRoute path='/categories' component={Categories} />
         <AuthorizeRoute path='/coalitions' component={Coalitions} />
         <AuthorizeRoute path='/countries' component={Countries} />
@@ -33,7 +30,6 @@ export default class App extends Component {
         <AuthorizeRoute path='/services' component={Services} />
         <AuthorizeRoute path='/statuses' component={Statuses} />
         <AuthorizeRoute path='/subcategories' component={Subcategories} />
-        <AuthorizeRoute path='/fetch-data' component={FetchData} />
         <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
       </Layout>
     );
