@@ -3,27 +3,6 @@ import DataGridExp from '../../libs/components/forms/DataGridExp';
 import { objectStore } from '../../stores/objectStore';
 import { categoryStore } from '../../stores/categoryStore';
 import { subcategoryStore } from '../../stores/subcategoryStore';
-import { 
-  DataGrid, 
-  Column, 
-  Editing, 
-  Scrolling, 
-  Lookup, 
-  Summary, 
-  TotalItem, 
-  Paging, 
-  Pager, 
-  Grouping, 
-  GroupPanel,
-  FilterRow,
-  HeaderFilter,
-  SearchPanel,
-  ColumnChooser, 
-  ColumnFixing,
-  MasterDetail,
-  StringLengthRule,
-  RequiredRule
-} from 'devextreme-react/data-grid';
 
 const types = {
   store: {
@@ -41,38 +20,37 @@ const types = {
   }
 }
 
-const columns = (
-  [
-    <Column dataField="id" dataType="number" caption="Id" allowEditing="false"></Column>,
-    <Column dataField="name" dataType="string" caption="Name">
-      <RequiredRule />
-      <StringLengthRule min="1" max="100" />
-    </Column>,
-    <Column dataField="type" caption="Type">
-      <Lookup 
-        dataSource={types}
-        displayExpr="name"
-      />
-      <RequiredRule />
-    </Column>,
-    <Column dataField="categoryId" dataType="number" caption="Category">
-      <Lookup 
-        dataSource={categoryStore}
-        valueExpr="id"
-        displayExpr="name"
-      />
-      <RequiredRule />
-    </Column>,
-    <Column dataField="subcategoryId" dataType="number" caption="Subcategory">
-      <Lookup 
-        dataSource={subcategoryStore}
-        valueExpr="id"
-        displayExpr="name"
-      />
-      <RequiredRule />
-    </Column>,
-  ]
-);
+const columns = [
+  { dataField: 'id', caption: 'Id', dataType: 'number', allowEditing: false },
+  { dataField: 'name', caption: 'Name', dataType: 'string', validationRules: [
+    { type: 'required' },
+    { type: 'stringLength', min: 1, max: 100 }
+  ]},
+  { dataField: 'type', caption: 'Type', validationRules: [
+    { type: 'required' }
+    ], lookup: {
+      dataSource: types,
+      valueExpr: 'id',
+      displayExpr: 'name'
+  }},
+  { dataField: 'categoryId', caption: 'Category', validationRules: [
+      { type: 'required' }
+    ], lookup: {
+      dataSource: categoryStore,
+      valueExpr: 'id',
+      displayExpr: 'name'
+  }},
+  { dataField: 'subcategoryId', caption: 'Subcategory', validationRules: [
+      { type: 'required' }
+    ], lookup: {
+      dataSource: subcategoryStore,
+      valueExpr: 'id',
+      displayExpr: 'name'
+    }},
+  { dataField: 'defaultCost', caption: 'Default cost', dataType: 'number', validationRules: [
+    { type: 'range', min: 0, max: 79228162514264337593543950335 }
+  ]}
+];
 
 export class Objects extends Component {
   constructor(props) {
@@ -82,7 +60,8 @@ export class Objects extends Component {
   render() {
     return (
       <>
-        <DataGridExp columns={columns} store={objectStore} useCustomColumns={true}/>
+        <h1 className="display-4">Objects</h1>
+        <DataGridExp columns={columns} store={objectStore}/>
       </>
     );
   }

@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
 import { 
-    DataGrid, 
-    Column, 
-    Editing, 
-    Scrolling, 
-    Lookup, 
-    Summary, 
-    TotalItem, 
+    DataGrid,
+    Editing,
     Paging, 
     Pager, 
     Grouping, 
@@ -28,7 +23,7 @@ export class DataGridExp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            refreshMode: 'reshape',
+            refreshMode: 'full',
             autoExpandAll: false,
             showFilterRow: true,
             showHeaderFilter: true,
@@ -41,51 +36,59 @@ export class DataGridExp extends Component {
         reshapeOnPush: true
     });
 
+    renderDetail() {
+        if(this.props.detailComponent) {
+            return (
+                <MasterDetail 
+                    enabled={true}
+                    component={this.props.detailComponent}
+                />
+            );
+        }
+        return null;
+    }
+
     render() {
         return (
-            <>
-                <DataGrid
-                    dataSource={this.dataSource}
-                    repaintChangesOnly={true}
-                    showBorders={true}
-                    showColumnLines={true}
-                    showRowLines={true}
-                    rowAlternationEnabled={true}
-                    onRowUpdating={onRowUpdating}
-                    allowColumnReordering={true}
-                    allowColumnResizing={true}
-                    columnAutoWidth={true}
-                >
-                    <Editing
-                        refreshMode={this.state.refreshMode}
-                        mode="form"
-                        allowAdding={true}
-                        allowDeleting={true}
-                        allowUpdating={true}
-                    />
-                    <ColumnChooser enabled={true} />
-                    <ColumnFixing enabled={true} />
-                    <FilterRow visible={this.state.showFilterRow}
-                        applyFilter={this.state.currentFilter} />
-                    <HeaderFilter visible={this.state.showHeaderFilter} />
-                    <SearchPanel visible={true}
-                        width={240}
-                        placeholder="Search..." />
-                    <GroupPanel visible={true} />
-                    <Grouping autoExpandAll={this.state.autoExpandAll} />
-                    <Paging defaultPageSize={10} />
-                    <Pager
-                        showPageSizeSelector={true}
-                        allowedPageSizes={[1, 2, 3, 5, 10, 25, 50]}
-                        showInfo={true} 
-                    />
-                    <MasterDetail 
-                        enabled={true}
-                        component={this.props.detailComponent}
-                    />
-                    {this.props.columns}
-                </DataGrid>
-            </>
+            <DataGrid
+                keyExpr={this.props.key ? this.props.key : 'id'}
+                dataSource={this.dataSource}
+                repaintChangesOnly={true}
+                showBorders={true}
+                showColumnLines={true}
+                showRowLines={true}
+                rowAlternationEnabled={true}
+                onRowUpdating={onRowUpdating}
+                allowColumnReordering={true}
+                allowColumnResizing={true}
+                columnAutoWidth={true}
+                columns={this.props.columns}
+            >
+                <Editing
+                    refreshMode={this.state.refreshMode}
+                    mode="form"
+                    allowAdding={true}
+                    allowDeleting={true}
+                    allowUpdating={true}
+                />
+                <ColumnChooser enabled={true} />
+                <ColumnFixing enabled={true} />
+                <FilterRow visible={this.state.showFilterRow}
+                    applyFilter={this.state.currentFilter} />
+                <HeaderFilter visible={this.state.showHeaderFilter} />
+                <SearchPanel visible={true}
+                    width={240}
+                    placeholder="Search..." />
+                <GroupPanel visible={true} />
+                <Grouping autoExpandAll={this.state.autoExpandAll} />
+                <Paging defaultPageSize={10} />
+                <Pager
+                    showPageSizeSelector={true}
+                    allowedPageSizes={[1, 2, 3, 5, 10, 25, 50]}
+                    showInfo={true} 
+                />
+                {this.renderDetail()}
+            </DataGrid>
         );
     }
 }

@@ -5,6 +5,7 @@ const apiUri = `${window.location.origin}/api/category`;
 
 export const categoryStore = new CustomStore({
     key: 'id',
+    byKey: (key) => sendRequest(`${apiUri}/${key}`),
     load: () => sendRequest(`${apiUri}`),
     insert: (data) => sendRequest(`${apiUri}`, 'POST', JSON.stringify(data)),
     update: (key, data) => sendRequest(`${apiUri}/${key}`, 'PUT', JSON.stringify(data)),

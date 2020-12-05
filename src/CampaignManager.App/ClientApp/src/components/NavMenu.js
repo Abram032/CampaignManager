@@ -14,6 +14,7 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { LoginMenu } from './api-authorization/LoginMenu';
+import authService from './api-authorization/AuthorizeService';
 import './NavMenu.css';
 
 export class NavMenu extends Component {
@@ -24,8 +25,13 @@ export class NavMenu extends Component {
 
     this.toggleNavbar = this.toggleNavbar.bind(this);
     this.state = {
-      collapsed: true
+      collapsed: true,
+      isAuthenticated: false
     };
+  }
+
+  async componentDidMount() {
+    this.setState({ isAuthenticated: await authService.isAuthenticated() });
   }
 
   toggleNavbar () {
@@ -34,30 +40,40 @@ export class NavMenu extends Component {
     });
   }
 
+  renderTemplates() {
+    if(!this.state.isAuthenticated) {
+      return null;
+    }
+
+    return (
+      <UncontrolledDropdown nav inNavbar>
+        <DropdownToggle className="nav-link" nav caret>Templates</DropdownToggle>
+        <DropdownMenu>
+          <DropdownItem href="/categories">Categories</DropdownItem>
+          <DropdownItem href="/coalitions">Coalitions</DropdownItem>
+          <DropdownItem href="/countries">Countries</DropdownItem>
+          <DropdownItem href="/objects">Objects</DropdownItem>
+          <DropdownItem href="/services">Services</DropdownItem>
+          <DropdownItem href="/statuses">Statuses</DropdownItem>
+          <DropdownItem href="/subcategories">Subcategories</DropdownItem>
+        </DropdownMenu>
+      </UncontrolledDropdown>
+    );
+  }
+
   render () {
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
           <Container>
-            <NavbarBrand tag={Link} to="/">CampaignManager.App</NavbarBrand>
+            <NavbarBrand tag={Link} to="/">Campaign Manager</NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow">
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
                 </NavItem>
-                <UncontrolledDropdown nav inNavbar>
-                  <DropdownToggle className="nav-link" nav caret>Templates</DropdownToggle>
-                  <DropdownMenu>
-                    <DropdownItem href="/categories">Categories</DropdownItem>
-                    <DropdownItem href="/coalitions">Coalitions</DropdownItem>
-                    <DropdownItem href="/countries">Countries</DropdownItem>
-                    <DropdownItem href="/objects">Objects</DropdownItem>
-                    <DropdownItem href="/services">Services</DropdownItem>
-                    <DropdownItem href="/statuses">Statuses</DropdownItem>
-                    <DropdownItem href="/subcategories">Subcategories</DropdownItem>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
+                {this.renderTemplates()}
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
                 </NavItem>

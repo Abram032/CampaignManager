@@ -25,14 +25,14 @@ export default class App extends Component {
     return (
       <Layout>
         <Route exact path='/' component={Home} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/categories' component={Categories} />
-        <Route path='/coalitions' component={Coalitions} />
-        <Route path='/countries' component={Countries} />
-        <Route path='/objects' component={Objects} />
-        <Route path='/services' component={Services} />
-        <Route path='/statuses' component={Statuses} />
-        <Route path='/subcategories' component={Subcategories} />
+        <AuthorizeRoute path='/counter' component={Counter} />
+        <AuthorizeRoute path='/categories' component={Categories} />
+        <AuthorizeRoute path='/coalitions' component={Coalitions} />
+        <AuthorizeRoute path='/countries' component={Countries} />
+        <AuthorizeRoute path='/objects' component={Objects} />
+        <AuthorizeRoute path='/services' component={Services} />
+        <AuthorizeRoute path='/statuses' component={Statuses} />
+        <AuthorizeRoute path='/subcategories' component={Subcategories} />
         <AuthorizeRoute path='/fetch-data' component={FetchData} />
         <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
       </Layout>

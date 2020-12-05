@@ -1,3 +1,5 @@
+import authService from '../../components/api-authorization/AuthorizeService';
+
 export const isNullOrUndefined = (value) => {
     if(value === undefined || value === null) {
         return true;
@@ -12,12 +14,20 @@ export const sendRequest = async (url, method, data) => {
 
     console.log(method, url, data);
 
+    const token = await authService.getAccessToken();
     let request = {
         method: method,
         headers: {
-          'Content-Type': 'application/json'
+            'Content-Type': 'application/json'
         },
         credentials: 'include'
+    }
+
+    if(token) {
+        request.headers = { 
+            ...request.headers, 
+            'Authorization': `Bearer ${token}`
+        };
     }
 
     if(method === 'POST' || method === 'PUT') {
@@ -30,8 +40,7 @@ export const sendRequest = async (url, method, data) => {
             const response = await result.json();
             console.log(method, url, response);
             return ({
-                data: response,
-                //totalCount: response.length
+                data: response
             });
         }
         if(method === 'POST') {
@@ -39,6 +48,6 @@ export const sendRequest = async (url, method, data) => {
             return response;
         }
     } else {
-      throw await result.json();
+      throw 'Something went wrong.';
     }
 }

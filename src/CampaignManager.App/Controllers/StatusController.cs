@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CampaignManager.App.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class StatusController : ControllerBase
