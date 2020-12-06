@@ -31,7 +31,6 @@ namespace CampaignManager.App.Data
             modelBuilder.Entity<Category>().HasKey(p => p.Id);
             modelBuilder.Entity<Category>().Property(p => p.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Category>().Property(p => p.Name).HasMaxLength(100).IsRequired();
-            modelBuilder.Entity<Category>().HasMany(p => p.Subcategories).WithOne(p => p.Category);
 
             modelBuilder.Entity<Coalition>().HasKey(p => p.Id);
             modelBuilder.Entity<Coalition>().Property(p => p.Id).ValueGeneratedOnAdd();
@@ -57,7 +56,6 @@ namespace CampaignManager.App.Data
             modelBuilder.Entity<Subcategory>().HasKey(p => p.Id);
             modelBuilder.Entity<Subcategory>().Property(p => p.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Subcategory>().Property(p => p.Name).HasMaxLength(100).IsRequired();
-            modelBuilder.Entity<Subcategory>().HasOne(p => p.Category).WithMany(p => p.Subcategories).IsRequired();
 
             modelBuilder.Entity<Campaign>().HasKey(p => p.Id);
             modelBuilder.Entity<Campaign>().Property(p => p.Id).ValueGeneratedOnAdd();

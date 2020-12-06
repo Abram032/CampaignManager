@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using CampaignManager.Models.Enums;
 
 namespace CampaignManager.Models
 {
@@ -7,6 +8,5 @@ namespace CampaignManager.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<Subcategory> Subcategories { get; set; }
     }
 }

@@ -11,10 +11,6 @@ const columns = [
 ];
 
 export class Services extends Component {
-  constructor(props) {
-    super(props);
-  };
-
   render() {
     return (
       <>

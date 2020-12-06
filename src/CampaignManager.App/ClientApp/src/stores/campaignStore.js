@@ -9,5 +9,5 @@ export const campaignStore = new CustomStore({
     load: () => sendRequest(`${apiUri}`),
     insert: (data) => sendRequest(`${apiUri}`, 'POST', JSON.stringify(data)),
     update: (key, data) => sendRequest(`${apiUri}/${key}`, 'PUT', JSON.stringify(data)),
-    remove: (key) => sendRequest(`${apiUri}/${key}`, 'DELETE'),
+    remove: (key) => sendRequest(`${apiUri}/${key}`, 'DELETE')
 });

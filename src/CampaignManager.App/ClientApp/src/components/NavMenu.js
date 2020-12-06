@@ -10,11 +10,12 @@ import {
   UncontrolledDropdown, 
   DropdownToggle, 
   DropdownMenu, 
-  DropdownItem 
+  DropdownItem,
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { LoginMenu } from './api-authorization/LoginMenu';
 import authService from './api-authorization/AuthorizeService';
+import { campaignStore } from '../stores/campaignStore';
 import './NavMenu.css';
 
 export class NavMenu extends Component {
@@ -31,7 +32,10 @@ export class NavMenu extends Component {
   }
 
   async componentDidMount() {
-    this.setState({ isAuthenticated: await authService.isAuthenticated() });
+    this.setState({ 
+      isAuthenticated: await authService.isAuthenticated(),
+      campaigns: await campaignStore.load()
+    });
   }
 
   toggleNavbar () {
@@ -65,11 +69,19 @@ export class NavMenu extends Component {
       return null;
     }
 
+    const campaignItems = this.state.campaigns.data.map((v) => {
+      return (
+        <DropdownItem key={v.id} href={`/campaign/${v.id}`}>{v.name}</DropdownItem>
+      )
+    });
+
     return (
       <UncontrolledDropdown nav inNavbar>
         <DropdownToggle className="nav-link" nav caret>Campaigns</DropdownToggle>
         <DropdownMenu>
-          <DropdownItem href="/campaign/create">Create campaign</DropdownItem>
+          <DropdownItem href="/createCampaign">Create campaign</DropdownItem>
+          <DropdownItem divider />
+          {campaignItems}
         </DropdownMenu>
       </UncontrolledDropdown>
     );

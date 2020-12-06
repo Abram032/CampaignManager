@@ -33,12 +33,7 @@ const columns = [
       valueExpr: 'id',
       displayExpr: 'name'
   }},
-  { dataField: 'categoryId', caption: 'Category', 
-    setCellValue: function(rowData, value) {
-      rowData.categoryId = value;
-      rowData.subcategoryId = null;
-    },
-    validationRules: [
+  { dataField: 'categoryId', caption: 'Category', validationRules: [
       { type: 'required' }
     ], lookup: {
       dataSource: categoryStore,
@@ -48,25 +43,17 @@ const columns = [
   { dataField: 'subcategoryId', caption: 'Subcategory', validationRules: [
       { type: 'required' }
     ], lookup: {
-      dataSource: function(options) {
-        return {
-          store: subcategoryStore,
-          filter: options.data ? ['categoryId', '=', options.data.categoryId] : null
-        };
-      },
+      dataSource: subcategoryStore,
       valueExpr: 'id',
       displayExpr: 'name'
   }},
-  { dataField: 'defaultCost', caption: 'Default cost', dataType: 'number', validationRules: [
-    { type: 'range', min: 0, max: 79228162514264337593543950335 }
+  { dataField: 'defaultCost', caption: 'Default cost', dataType: 'number', format: 'currency', 
+    editorOptions: { format: 'currency' }, validationRules: [
+      { type: 'range', min: 0, max: 79228162514264337593543950335 }
   ]}
 ];
 
 export class Entities extends Component {
-  constructor(props) {
-    super(props);
-  };
-
   render() {
     return (
       <>

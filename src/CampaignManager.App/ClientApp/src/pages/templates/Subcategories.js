@@ -8,21 +8,10 @@ const columns = [
   { dataField: 'name', caption: 'Name', dataType: 'string', validationRules: [
     { type: 'required' },
     { type: 'stringLength', min: 1, max: 100 }
-  ]},
-  { dataField: 'categoryId', caption: 'Category', validationRules: [
-      { type: 'required' }
-    ], lookup: {
-      dataSource: categoryStore,
-      valueExpr: 'id',
-      displayExpr: 'name'
-  }}
+  ]}
 ];
 
 export class Subcategories extends Component {
-  constructor(props) {
-    super(props);
-  };
-
   render() {
     return (
       <>

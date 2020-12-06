@@ -8,7 +8,6 @@ export const isNullOrUndefined = (value) => {
 }
 
 export const sendRequest = async (url, method, data) => {
-
     method = method || 'GET';
     data = data || {};
 

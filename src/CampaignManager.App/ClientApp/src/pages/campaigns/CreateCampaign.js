@@ -1,17 +1,33 @@
 import React, { Component } from 'react';
-import DataGridExp from '../../libs/components/forms/DataGridExp';
+import { campaignStore } from '../../stores/campaignStore';
+import CampaignForm from '../../libs/components/forms/CampaignForm';
 
 const title = 'Create campaign';
 
 export class CreateCampaign extends Component {
-
-    render() {
-      return (
-        <>
-          <h1 className="display-4">{title}</h1>
-        </>
-      );
+  constructor(props) {
+    super(props);
+    this.state = {
+      campaign: {}
     }
-  };
+
+    this.onSubmit = this.onSubmit.bind(this);
+  }
   
-  export default CreateCampaign;
+  onSubmit(event) {
+    campaignStore.insert(this.state.campaign);
+  }
+
+  render() {
+    return (
+      <>
+        <h1 className="display-4">{title}</h1>
+        <form onSubmit={this.onSubmit}>
+          <CampaignForm campaign={this.state.campaign} submitText={'Create'}/>
+        </form>
+      </>
+    );
+  }
+};
+
+export default CreateCampaign;

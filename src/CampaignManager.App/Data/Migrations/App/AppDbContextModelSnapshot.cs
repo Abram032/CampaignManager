@@ -380,17 +380,12 @@ namespace CampaignManager.App.Data.Migrations.App
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .HasMaxLength(100);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("Subcategories");
                 });
@@ -509,15 +504,6 @@ namespace CampaignManager.App.Data.Migrations.App
                     b.HasOne("CampaignManager.Models.Location", null)
                         .WithMany("Services")
                         .HasForeignKey("LocationId");
-                });
-
-            modelBuilder.Entity("CampaignManager.Models.Subcategory", b =>
-                {
-                    b.HasOne("CampaignManager.Models.Category", "Category")
-                        .WithMany("Subcategories")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

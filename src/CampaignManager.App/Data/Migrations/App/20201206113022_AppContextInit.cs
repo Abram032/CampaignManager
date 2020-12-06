@@ -74,18 +74,11 @@ namespace CampaignManager.App.Data.Migrations.App
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(maxLength: 100, nullable: false),
-                    CategoryId = table.Column<int>(nullable: false)
+                    Name = table.Column<string>(maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Subcategories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Subcategories_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -411,11 +404,6 @@ namespace CampaignManager.App.Data.Migrations.App
                 name: "IX_Services_LocationId",
                 table: "Services",
                 column: "LocationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Subcategories_CategoryId",
-                table: "Subcategories",
-                column: "CategoryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -442,13 +430,13 @@ namespace CampaignManager.App.Data.Migrations.App
                 name: "Locations");
 
             migrationBuilder.DropTable(
+                name: "Categories");
+
+            migrationBuilder.DropTable(
                 name: "Subcategories");
 
             migrationBuilder.DropTable(
                 name: "Factions");
-
-            migrationBuilder.DropTable(
-                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Campaigns");

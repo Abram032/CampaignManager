@@ -24,13 +24,11 @@ namespace CampaignManager.App.Controllers
         public async Task<ActionResult<List<SubcategoryDTO>>> GetAll()
         {
             var subcategories = await _context.Subcategories
-                .Include(p => p.Category)
                 .ToListAsync();
 
             return subcategories.Select(p => new SubcategoryDTO {
                 Id = p.Id,
-                Name = p.Name,
-                CategoryId = p.Category.Id
+                Name = p.Name
             }).ToList();
         }
 
@@ -38,7 +36,6 @@ namespace CampaignManager.App.Controllers
         public async Task<ActionResult<SubcategoryDTO>> Get(int id)
         {
             var entity = await _context.Entities
-                .Include(p => p.Category)
                 .FirstOrDefaultAsync(p => p.Id == id);
                 
             if(entity == null) {
@@ -47,21 +44,15 @@ namespace CampaignManager.App.Controllers
 
             return new SubcategoryDTO {
                 Id = entity.Id,
-                Name = entity.Name,
-                CategoryId = entity.Category.Id
+                Name = entity.Name
             };
         }
 
         [HttpPost]
         public async Task<ActionResult<SubcategoryDTO>> Post(SubcategoryDTO subcategory)
         {
-            var category = await _context.Categories
-                .Include(p => p.Subcategories)
-                .FirstOrDefaultAsync(p => p.Id == subcategory.CategoryId);
-            
             var _subcategory = new Subcategory {
-                Name = subcategory.Name,
-                Category = category
+                Name = subcategory.Name
             };
 
             await _context.Subcategories.AddAsync(_subcategory);
@@ -78,11 +69,9 @@ namespace CampaignManager.App.Controllers
             }
 
             var _subcategory = await _context.Subcategories
-                .Include(p => p.Category)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             _subcategory.Name = subcategory.Name;
-            _subcategory.Category = await _context.Categories.FirstOrDefaultAsync(p => p.Id == subcategory.CategoryId);
             
             _context.Subcategories.Update(_subcategory);
             await _context.SaveChangesAsync();

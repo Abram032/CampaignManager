@@ -16,10 +16,6 @@ const columns = [
 ];
 
 export class Coalitions extends Component {
-  constructor(props) {
-    super(props);
-  };
-
   render() {
     return (
       <>
