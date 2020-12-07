@@ -1,6 +1,7 @@
 import { Form, SimpleItem, GroupItem, StringLengthRule, RequiredRule, ButtonItem } from 'devextreme-react/form';
 import React, { Component } from 'react';
-import 'devextreme-react/text-area'
+import 'devextreme/ui/switch';
+import 'devextreme-react/text-area';
 
 
 export class CampaignForm extends Component {
@@ -11,6 +12,11 @@ export class CampaignForm extends Component {
       text: this.props.submitText,
       type: 'success',
       useSubmitBehavior: true
+    };
+    this.switchOptions = {
+      width: 75,
+      switchedOffText: 'Inactive',
+      switchedOnText: 'Active'
     };
   }
 
@@ -29,6 +35,7 @@ export class CampaignForm extends Component {
             <StringLengthRule max={10000} />
           </SimpleItem>
         </GroupItem>
+        <GroupItem colCount={4}>
           <SimpleItem dataField='currency' label='Currency'>
             <RequiredRule />
             <StringLengthRule max={10} />
@@ -37,10 +44,11 @@ export class CampaignForm extends Component {
             <RequiredRule />
           </SimpleItem>
           <SimpleItem dataField='endDate' label='End date' editorType='dxDateBox'/>
-          <SimpleItem dataField='isActive' label='Is active?' editorType='dxCheckBox'/>
-          <ButtonItem horizontalAlignment="right"
-            buttonOptions={this.buttonOptions}
-          />
+          <SimpleItem dataField='isActive' label='Is active?' editorType='dxSwitch' editorOptions={this.switchOptions}/>
+        </GroupItem>
+        <ButtonItem horizontalAlignment="right"
+          buttonOptions={this.buttonOptions}
+        />
       </Form>
     );
   }
