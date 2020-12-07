@@ -79,7 +79,7 @@ export class NavMenu extends Component {
       <UncontrolledDropdown nav inNavbar>
         <DropdownToggle className="nav-link" nav caret>Campaigns</DropdownToggle>
         <DropdownMenu>
-          <DropdownItem href="/createCampaign">Create campaign</DropdownItem>
+          <DropdownItem href="/create">Create campaign</DropdownItem>
           <DropdownItem divider />
           {campaignItems}
         </DropdownMenu>

@@ -1,6 +1,6 @@
 using CampaignManager.Models.Enums;
 
-namespace CampaignManager.Models
+namespace CampaignManager.App.Models
 {
     public class EntityDTO
     {

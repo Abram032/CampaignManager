@@ -4,7 +4,7 @@ import CampaignForm from '../../libs/components/forms/CampaignForm';
 
 const title = 'Create campaign';
 
-export class CreateCampaign extends Component {
+export class Create extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,4 +30,4 @@ export class CreateCampaign extends Component {
   }
 };
 
-export default CreateCampaign;
+export default Create;

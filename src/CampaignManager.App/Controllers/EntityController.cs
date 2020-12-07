@@ -1,11 +1,12 @@
 using System.Threading.Tasks;
 using CampaignManager.App.Data;
-using CampaignManager.Models;
+using CampaignManager.App.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using CampaignManager.Models;
 
 namespace CampaignManager.App.Controllers
 {

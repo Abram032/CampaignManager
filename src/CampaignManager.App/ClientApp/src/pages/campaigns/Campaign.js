@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { campaignStore } from '../../stores/campaignStore';
-import CampaignForm from '../../libs/components/forms/CampaignForm';
-import { Nav, NavItem, NavLink, TabContent, TabPane, Row, COl } from 'reactstrap';
-import Col from 'reactstrap/lib/Col';
+import { Nav, NavItem, NavLink, TabContent, TabPane, Row, Col } from 'reactstrap';
 
 export class Campaign extends Component {
   constructor(props) {
@@ -13,7 +11,6 @@ export class Campaign extends Component {
       activeTab: ''
     }
     this.id = this.props.match.params.id;
-    this.onSubmit = this.onSubmit.bind(this);
     this.setActiveTab = this.setActiveTab.bind(this);
     this.renderCampaignForm = this.renderCampaignForm.bind(this);
   }
@@ -25,24 +22,6 @@ export class Campaign extends Component {
 
   setActiveTab(value) {
     this.setState({ activeTab: value });
-  }
-  
-  onSubmit(event) {
-    campaignStore.update(this.id, this.state.campaign.data);
-    debugger;
-  }
-
-  renderCampaignForm() {
-    return (
-      <Row className='mb-5'>
-        <Col>
-          <p className="lead mt-3 mb-3">Configuration</p>
-          <form onSubmit={this.onSubmit}>
-            <CampaignForm campaign={this.state.campaign.data} submitText={'Save'}/>
-          </form>
-        </Col>
-      </Row>
-    )
   }
 
   render() {
@@ -59,15 +38,6 @@ export class Campaign extends Component {
           <NavItem>
             <NavLink onClick={() => { this.setActiveTab('locations') }}>Locations</NavLink>
           </NavItem>
-          <NavItem>
-            <NavLink onClick={() => { this.setActiveTab('factions') }}>Factions</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink onClick={() => { this.setActiveTab('prices') }}>Prices</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink onClick={() => { this.setActiveTab('configuration') }}>Configuration</NavLink>
-          </NavItem>
         </Nav>
         <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId={'overview'}>
@@ -78,15 +48,6 @@ export class Campaign extends Component {
           </TabPane>
           <TabPane tabId={'locations'}>
             
-          </TabPane>
-          <TabPane tabId={'factions'}>
-            
-          </TabPane>
-          <TabPane tabId={'prices'}>
-            
-          </TabPane>
-          <TabPane tabId={'configuration'}>
-            {this.renderCampaignForm()}
           </TabPane>
         </TabContent>
       </>
