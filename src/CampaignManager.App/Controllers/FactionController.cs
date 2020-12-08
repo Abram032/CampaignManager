@@ -10,7 +10,7 @@ using CampaignManager.App.Models;
 
 namespace CampaignManager.App.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class FactionController : ControllerBase
@@ -22,15 +22,21 @@ namespace CampaignManager.App.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<FactionDTO>>> GetAll()
+        public async Task<ActionResult<List<FactionDTO>>> GetAll(int campaignId)
         {
-            var factions = await _context.Factions
+            var factions = _context.Factions
                 .Include(p => p.Campaign)
                 .Include(p => p.Country)
                 .Include(p => p.Coalition)
-                .ToListAsync();
+                .AsQueryable();
 
-            return factions.Select(p => new FactionDTO {
+            if(campaignId != 0) {
+                factions = factions.Where(p => p.Campaign.Id == campaignId);
+            }
+
+            var result = await factions.ToListAsync();
+
+            return result.Select(p => new FactionDTO {
                 Id = p.Id,
                 Name = p.Name,
                 CampaignId = p.Campaign.Id,

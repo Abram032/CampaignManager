@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { campaignStore } from '../../stores/campaignStore';
 import CampaignForm from '../../libs/components/forms/CampaignForm';
 import { Nav, NavItem, NavLink, TabContent, TabPane, Row, Col } from 'reactstrap';
+import FactionForm from '../../libs/components/forms/FactionForm';
 
 export class Configure extends Component {
   constructor(props) {
@@ -14,6 +15,7 @@ export class Configure extends Component {
     this.id = this.props.match.params.id;
     this.onSubmit = this.onSubmit.bind(this);
     this.renderCampaignForm = this.renderCampaignForm.bind(this);
+    this.renderFactions = this.renderFactions.bind(this);
   }
 
   async componentDidMount() {
@@ -39,7 +41,9 @@ export class Configure extends Component {
   }
 
   renderFactions() {
-    
+    return (
+      <FactionForm campaignId={this.id} />
+    )
   }
 
   render() {
@@ -47,6 +51,7 @@ export class Configure extends Component {
       <>
         <h1 className="display-4">{this.state.title}</h1>
         {this.renderCampaignForm()}
+        {this.renderFactions()}
       </>
     );
   }

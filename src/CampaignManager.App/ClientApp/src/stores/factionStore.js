@@ -6,8 +6,9 @@ const apiUri = `${window.location.origin}/api/faction`;
 export const factionStore = new CustomStore({
     key: 'id',
     byKey: (key) => sendRequest(`${apiUri}/${key}`),
-    load: () => sendRequest(`${apiUri}`),
+    load: () => sendRequest(`${apiUri}${this.campaignId ? '?campaignId=' + this.campaignId : ''}`),
     insert: (data) => sendRequest(`${apiUri}`, 'POST', JSON.stringify(data)),
     update: (key, data) => sendRequest(`${apiUri}/${key}`, 'PUT', JSON.stringify(data)),
-    remove: (key) => sendRequest(`${apiUri}/${key}`, 'DELETE')
+    remove: (key) => sendRequest(`${apiUri}/${key}`, 'DELETE'),
+    campaignId: null
 });
