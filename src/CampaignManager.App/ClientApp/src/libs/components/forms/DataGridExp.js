@@ -22,18 +22,21 @@ function onRowUpdating(options) {
 export class DataGridExp extends Component {
     constructor(props) {
         super(props);
+        debugger;
         this.state = {
             refreshMode: 'full',
             autoExpandAll: false,
             showFilterRow: true,
             showHeaderFilter: true,
-            currentFilter: 'auto'
+            currentFilter: 'auto',
+            loadOptions: this.props.options
         }
     }
-
+    debugger;
     dataSource = new DataSource({
         store: this.props.store,
-        reshapeOnPush: true
+        reshapeOnPush: true,
+        customQueryParams: this.props.options || {}
     });
 
     renderDetail() {

@@ -3,16 +3,20 @@ import { campaignStore } from '../../stores/campaignStore';
 import CampaignForm from '../../libs/components/forms/CampaignForm';
 import { Nav, NavItem, NavLink, TabContent, TabPane, Row, Col } from 'reactstrap';
 import FactionForm from '../../libs/components/forms/FactionForm';
+import { factionStore } from '../../stores/factionStore';
 
 export class Configure extends Component {
   constructor(props) {
     super(props);
+    
+    this.id = this.props.match.params.id;
+
     this.state = {
       title: 'Configure Campaign',
       campaign: { data: null },
+      factionOptions: { campaignId: this.id },
       activeTab: ''
     }
-    this.id = this.props.match.params.id;
     this.onSubmit = this.onSubmit.bind(this);
     this.renderCampaignForm = this.renderCampaignForm.bind(this);
     this.renderFactions = this.renderFactions.bind(this);
@@ -42,7 +46,7 @@ export class Configure extends Component {
 
   renderFactions() {
     return (
-      <FactionForm campaignId={this.id} />
+      <FactionForm store={factionStore} options={this.state.factionOptions} />
     )
   }
 

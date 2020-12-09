@@ -7,9 +7,14 @@ export const isNullOrUndefined = (value) => {
     return false;
 }
 
-export const sendRequest = async (url, method, data) => {
+export const sendRequest = async (url, method, data, query) => {
+    debugger;
     method = method || 'GET';
     data = data || {};
+
+    if(method === 'GET' && query) {
+        url = `${url}?campaignId=${query.campaignId}`
+    }
 
     console.log(method, url, data);
 

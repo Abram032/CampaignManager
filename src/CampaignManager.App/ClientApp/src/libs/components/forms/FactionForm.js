@@ -24,30 +24,17 @@ const columns = [
       valueExpr: 'id',
       displayExpr: 'name'
   }},
-  { dataField: 'budget', caption: 'DBudget', dataType: 'number', format: 'currency', 
+  { dataField: 'budget', caption: 'Budget', dataType: 'number', format: 'currency', 
     editorOptions: { format: 'currency' }, validationRules: [
       { type: 'range', min: 0, max: 79228162514264337593543950335 }
   ]}
 ];
 
 export class FactionForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      factionStore: null
-    }
-  }
-
-  componentDidMount() {
-    debugger;
-    this.setState({ factionStore: factionStore }); 
-    this.state.factionStore.campaignId = this.props.campaignId;
-  }
-
   render() {
     return (
       <>
-        <DataGridExp columns={columns} store={this.factionStore}/>
+        <DataGridExp columns={columns} store={this.props.store} options={this.props.options}/>
       </>
     );
   }
