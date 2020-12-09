@@ -14,7 +14,10 @@ export class Configure extends Component {
     this.state = {
       title: 'Configure Campaign',
       campaign: { data: null },
-      factionOptions: { campaignId: this.id },
+      factionOptions: { 
+        expr: 'campaignId',
+        value: this.id  
+      },
       activeTab: ''
     }
     this.onSubmit = this.onSubmit.bind(this);
@@ -46,7 +49,10 @@ export class Configure extends Component {
 
   renderFactions() {
     return (
-      <FactionForm store={factionStore} options={this.state.factionOptions} />
+      <>
+        <p className="lead mt-3 mb-3">Factions</p>
+        <FactionForm store={factionStore} options={this.state.factionOptions} campaignId={this.id} />
+      </>
     )
   }
 

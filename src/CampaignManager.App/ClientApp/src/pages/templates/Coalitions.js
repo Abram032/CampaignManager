@@ -10,7 +10,7 @@ const columns = [
     { type: 'stringLength', min: 1, max: 100 }
   ]},
   { dataField: 'color', caption: 'Color', dataType: 'string', validationRules: [
-    { type: 'pattern', pattern: /^#[A-Fa-f0-9]{3,6}$/g },
+    { type: 'pattern', pattern: /#[A-Fa-f0-9]{3,6}/g },
     { type: 'stringLength', min: 4, max: 7 }
   ]}
 ];

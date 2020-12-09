@@ -22,22 +22,26 @@ function onRowUpdating(options) {
 export class DataGridExp extends Component {
     constructor(props) {
         super(props);
-        debugger;
         this.state = {
             refreshMode: 'full',
             autoExpandAll: false,
             showFilterRow: true,
             showHeaderFilter: true,
             currentFilter: 'auto',
-            loadOptions: this.props.options
+            options: this.props.options
+        };
+
+        this.dataSource = new DataSource({
+            store: this.props.store,
+            reshapeOnPush: true
+        });
+
+        if(this.state.options) {
+            this.dataSource.searchExpr(this.state.options.expr);
+            this.dataSource.searchOperation(this.state.options.operation);
+            this.dataSource.searchValue(this.state.options.value);
         }
-    }
-    debugger;
-    dataSource = new DataSource({
-        store: this.props.store,
-        reshapeOnPush: true,
-        customQueryParams: this.props.options || {}
-    });
+    } 
 
     renderDetail() {
         if(this.props.detailComponent) {
@@ -62,6 +66,7 @@ export class DataGridExp extends Component {
                 showRowLines={true}
                 rowAlternationEnabled={true}
                 onRowUpdating={onRowUpdating}
+                onRowInserting={this.props.onRowInserting}
                 allowColumnReordering={true}
                 allowColumnResizing={true}
                 columnAutoWidth={true}

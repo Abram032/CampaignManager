@@ -31,10 +31,19 @@ const columns = [
 ];
 
 export class FactionForm extends Component {
+  constructor(props) {
+    super(props);
+    this.onRowInserting = this.onRowInserting.bind(this);
+  }
+
+  onRowInserting(options) {
+    options.data = { ...options.data, campaignId: parseInt(this.props.campaignId) }
+  }
+
   render() {
     return (
       <>
-        <DataGridExp columns={columns} store={this.props.store} options={this.props.options}/>
+        <DataGridExp columns={columns} store={this.props.store} options={this.props.options} onRowInserting={this.onRowInserting}/>
       </>
     );
   }

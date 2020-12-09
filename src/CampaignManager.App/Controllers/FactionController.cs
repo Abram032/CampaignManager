@@ -10,7 +10,7 @@ using CampaignManager.App.Models;
 
 namespace CampaignManager.App.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class FactionController : ControllerBase

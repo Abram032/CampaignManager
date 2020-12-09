@@ -8,12 +8,11 @@ export const isNullOrUndefined = (value) => {
 }
 
 export const sendRequest = async (url, method, data, query) => {
-    debugger;
     method = method || 'GET';
     data = data || {};
 
-    if(method === 'GET' && query) {
-        url = `${url}?campaignId=${query.campaignId}`
+    if(method === 'GET' && !isNullOrUndefined(query) && !isNullOrUndefined(query.searchExpr)) {
+        url = `${url}?${query.searchExpr}=${query.searchValue}`
     }
 
     console.log(method, url, data);

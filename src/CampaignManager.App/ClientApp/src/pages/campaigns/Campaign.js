@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { campaignStore } from '../../stores/campaignStore';
-import { Nav, NavItem, NavLink, TabContent, TabPane, Row, Col } from 'reactstrap';
+import { factionStore } from '../../stores/factionStore';
+import { Nav, NavItem, NavLink, TabContent, TabPane, Row, Col, Button } from 'reactstrap';
+import { Link } from 'react-router-dom';
+import SelectBox from 'devextreme-react/select-box';
 
 export class Campaign extends Component {
   constructor(props) {
@@ -8,11 +11,12 @@ export class Campaign extends Component {
     this.state = {
       title: 'Campaign',
       campaign: { data: null },
+      faction: null,
       activeTab: ''
     }
     this.id = this.props.match.params.id;
     this.setActiveTab = this.setActiveTab.bind(this);
-    this.renderCampaignForm = this.renderCampaignForm.bind(this);
+    this.onFactionChanged = this.onFactionChanged.bind(this);
   }
 
   async componentDidMount() {
@@ -24,10 +28,23 @@ export class Campaign extends Component {
     this.setState({ activeTab: value });
   }
 
+  onFactionChanged() {
+
+  }
+
   render() {
     return (
       <>
         <h1 className="display-4 mb-5">{this.state.title}</h1>
+        <Row style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Link to={`/configure/${this.id}`} className='btn btn-warning mr-3'>Configuration</Link>
+          <SelectBox
+            displayExpr="name"
+            dataSource={factionStore}
+            value={this.state.faction}
+            onValueChanged={this.onFactionChanged}
+          />
+        </Row>
         <Nav tabs>
           <NavItem>
             <NavLink onClick={() => { this.setActiveTab('overview') }}>Overview</NavLink>
