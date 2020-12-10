@@ -125,8 +125,5 @@ namespace CampaignManager.App.Controllers
 
             return NoContent();
         }
-
-        private async Task<bool> FactionExists(int id) 
-            => await _context.Factions.AnyAsync(p => p.Id == id);
     }
 }

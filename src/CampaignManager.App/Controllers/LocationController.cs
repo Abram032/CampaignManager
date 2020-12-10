@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using CampaignManager.App.Models;
 
 namespace CampaignManager.App.Controllers
 {
@@ -21,56 +22,96 @@ namespace CampaignManager.App.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Location>>> GetAll()
+        public async Task<ActionResult<List<LocationDTO>>> GetAll(int campaignId)
         {
-            var locations = await _context.Locations.ToListAsync();
-            return locations;
+            var locations = _context.Locations
+                .Include(p => p.Campaign)
+                .Include(p => p.Faction)
+                .AsQueryable();
+
+            if(campaignId != 0) {
+                locations = locations.Where(p => p.Campaign.Id == campaignId);
+            }
+
+            var result = await locations.ToListAsync();
+
+            return result.Select(p => new LocationDTO {
+                Id = p.Id,
+                Name = p.Name,
+                CampaignId = p.Campaign.Id,
+                Description = p.Description,
+                FactionId = p.Faction.Id,
+                Longitude = p.Longitude,
+                Latitude = p.Latitude,
+                Status = p.Status
+            }).ToList();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Location>> Get(int id)
+        public async Task<ActionResult<LocationDTO>> Get(int id)
         {
-            var location = await _context.Locations.FindAsync(id);
+            var location = await _context.Locations
+                .Include(p => p.Campaign)
+                .Include(p => p.Faction)
+                .FirstOrDefaultAsync(p => p.Id == id);
+                
             if(location == null) {
                 return NotFound();
             }
 
-            return location;
+            return new LocationDTO {
+                Id = location.Id,
+                Name = location.Name,
+                CampaignId = location.Campaign.Id,
+                Description = location.Description,
+                FactionId = location.Faction.Id,
+                Longitude = location.Longitude,
+                Latitude = location.Latitude,
+                Status = location.Status
+            };
         }
 
         [HttpPost]
-        public async Task<ActionResult<Location>> Post(Location location)
+        public async Task<ActionResult<LocationDTO>> Post(LocationDTO location)
         {
-            await _context.Locations.AddAsync(location);
+            var _location = new Location {
+                Name = location.Name,
+                Campaign = await _context.Campaigns.FirstOrDefaultAsync(p => p.Id == location.CampaignId),
+                Faction = await _context.Factions.FirstOrDefaultAsync(p => p.Id == location.FactionId),
+                Description = location.Description,
+                Longitude = location.Longitude,
+                Latitude = location.Latitude,
+                Status = location.Status
+            };
+
+            await _context.Locations.AddAsync(_location);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = location.Id }, location);
+            return CreatedAtAction(nameof(Get), new { id = _location.Id }, location);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Location location)
+        public async Task<IActionResult> Put(int id, LocationDTO location)
         {
             if (id != location.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(location).State = EntityState.Modified;
+            var _location = await _context.Locations
+                .Include(p => p.Campaign)
+                .Include(p => p.Faction)
+                .FirstOrDefaultAsync(p => p.Id == id);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (await LocationExists(id))
-                {
-                    throw;
-                }
-                else
-                {
-                    return NotFound();
-                }
-            }
+            _location.Name = location.Name;
+            _location.Campaign = await _context.Campaigns.FirstOrDefaultAsync(p => p.Id == location.CampaignId);
+            _location.Faction = await _context.Factions.FirstOrDefaultAsync(p => p.Id == location.FactionId);
+            _location.Description = location.Description;
+            _location.Longitude = location.Longitude;
+            _location.Latitude = location.Latitude;
+            _location.Status = location.Status;
+            
+            _context.Locations.Update(_location);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -89,8 +130,5 @@ namespace CampaignManager.App.Controllers
 
             return NoContent();
         }
-
-        private async Task<bool> LocationExists(int id) 
-            => await _context.Locations.AnyAsync(p => p.Id == id);
     }
 }

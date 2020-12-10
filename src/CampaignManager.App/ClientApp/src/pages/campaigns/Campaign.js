@@ -1,20 +1,29 @@
 import React, { Component } from 'react';
 import { campaignStore } from '../../stores/campaignStore';
 import { factionStore } from '../../stores/factionStore';
+import { locationStore } from '../../stores/locationStore';
 import { Nav, NavItem, NavLink, TabContent, TabPane, Row, Col, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import SelectBox from 'devextreme-react/select-box';
+import LocationForm from '../../libs/components/forms/LocationForm';
 
 export class Campaign extends Component {
   constructor(props) {
     super(props);
+
+    this.id = this.props.match.params.id;
+
     this.state = {
       title: 'Campaign',
       campaign: { data: null },
+      options: {
+        expr: 'campaignId',
+        value: this.id  
+      },
       faction: null,
       activeTab: ''
     }
-    this.id = this.props.match.params.id;
+    
     this.setActiveTab = this.setActiveTab.bind(this);
     this.onFactionChanged = this.onFactionChanged.bind(this);
 
@@ -55,7 +64,8 @@ export class Campaign extends Component {
   renderLocations() {
     return (
       <>
-        <p className='lead mt-3 mb-3'>Locations placeholder</p>
+        <p className='lead mt-3 mb-3'>Locations</p>
+        <LocationForm store={locationStore} options={this.state.options} campaignId={this.id} />
       </>
     )
   }
