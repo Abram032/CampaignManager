@@ -17,6 +17,10 @@ export class Campaign extends Component {
     this.id = this.props.match.params.id;
     this.setActiveTab = this.setActiveTab.bind(this);
     this.onFactionChanged = this.onFactionChanged.bind(this);
+
+    this.renderOverview = this.renderOverview.bind(this);
+    this.renderMissions = this.renderMissions.bind(this);
+    this.renderLocations = this.renderLocations.bind(this);
   }
 
   async componentDidMount() {
@@ -32,14 +36,38 @@ export class Campaign extends Component {
 
   }
 
+  renderOverview() {
+    return (
+      <>
+        <p className='lead mt-3 mb-3'>Overview placeholder</p>
+      </>
+    )
+  }
+
+  renderMissions() {
+    return (
+      <>
+        <p className='lead mt-3 mb-3'>Missions placeholder</p>
+      </>
+    )
+  }
+
+  renderLocations() {
+    return (
+      <>
+        <p className='lead mt-3 mb-3'>Locations placeholder</p>
+      </>
+    )
+  }
+
   render() {
     return (
       <>
-        <h1 className="display-4 mb-5">{this.state.title}</h1>
+        <h1 className='display-4 mb-5'>{this.state.title}</h1>
         <Row style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Link to={`/configure/${this.id}`} className='btn btn-warning mr-3'>Configuration</Link>
           <SelectBox
-            displayExpr="name"
+            displayExpr='name'
             dataSource={factionStore}
             value={this.state.faction}
             onValueChanged={this.onFactionChanged}
@@ -58,13 +86,13 @@ export class Campaign extends Component {
         </Nav>
         <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId={'overview'}>
-
+            {this.renderOverview()}
           </TabPane>
           <TabPane tabId={'missions'}>
-            
+            {this.renderMissions()}
           </TabPane>
           <TabPane tabId={'locations'}>
-            
+            {this.renderLocations()}
           </TabPane>
         </TabContent>
       </>

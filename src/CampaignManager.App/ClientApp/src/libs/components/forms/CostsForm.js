@@ -1,35 +1,23 @@
 import React, { Component } from 'react';
 import DataGridExp from '../forms/DataGridExp';
-import { coalitionStore } from '../../../stores/coalitionStore';
-import { countryStore } from '../../../stores/countryStore';
+import { entityStore } from '../../../stores/entityStore';
 
 const columns = [
   { dataField: 'id', caption: 'Id', dataType: 'number', allowEditing: false },
-  { dataField: 'name', caption: 'Name', dataType: 'string', validationRules: [
-    { type: 'required' },
-    { type: 'stringLength', min: 1, max: 100 }
-  ]},
-  { dataField: 'coalitionId', caption: 'Coalition', validationRules: [
+  { dataField: 'entityId', caption: 'Entity', validationRules: [
       { type: 'required' }
     ], lookup: {
-      dataSource: coalitionStore,
+      dataSource: entityStore,
       valueExpr: 'id',
       displayExpr: 'name'
   }},
-  { dataField: 'countryId', caption: 'Country', validationRules: [
-      { type: 'required' }
-    ], lookup: {
-      dataSource: countryStore,
-      valueExpr: 'id',
-      displayExpr: 'name'
-  }},
-  { dataField: 'budget', caption: 'Budget', dataType: 'number', format: 'currency', 
+  { dataField: 'cost', caption: 'Cost', dataType: 'number', format: 'currency', 
     editorOptions: { format: 'currency' }, validationRules: [
       { type: 'range', min: 0, max: 79228162514264337593543950335 }
   ]}
 ];
 
-export class FactionForm extends Component {
+export class CostsForm extends Component {
   constructor(props) {
     super(props);
     this.onRowInserting = this.onRowInserting.bind(this);
@@ -48,4 +36,4 @@ export class FactionForm extends Component {
   }
 };
 
-export default FactionForm;
+export default CostsForm;
