@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import DataGridExp from '../forms/DataGridExp';
 import { factionStore } from '../../../stores/factionStore';
+import { LocationDetail } from '../details/LocationDetail';
 
 const statuses = {
   store: {
@@ -53,7 +54,13 @@ export class LocationForm extends Component {
   render() {
     return (
       <>
-        <DataGridExp columns={columns} store={this.props.store} options={this.props.options} onRowInserting={this.onRowInserting}/>
+        <DataGridExp 
+          columns={columns} 
+          store={this.props.store} 
+          options={this.props.options} 
+          onRowInserting={this.onRowInserting} 
+          detailComponent={LocationDetail}
+        />
       </>
     );
   }
