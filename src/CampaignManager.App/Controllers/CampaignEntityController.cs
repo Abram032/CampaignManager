@@ -76,7 +76,6 @@ namespace CampaignManager.App.Controllers
         {
             var faction = (await _context.Locations.Include(p => p.Faction).FirstOrDefaultAsync(p => p.Id == entity.LocationId)).Faction;
             var _entity = new CampaignEntity {
-                Name = (await _context.Entities.FirstOrDefaultAsync(p => p.Id == entity.EntityId))?.Name,
                 Campaign = await _context.Campaigns.FirstOrDefaultAsync(p => p.Id == entity.CampaignId),
                 Entity = await _context.Entities.FirstOrDefaultAsync(p => p.Id == entity.EntityId),
                 Faction = faction,
@@ -119,7 +118,6 @@ namespace CampaignManager.App.Controllers
                 .Include(p => p.Faction)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
-            _entity.Name = (await _context.Entities.FirstOrDefaultAsync(p => p.Id == entity.Id))?.Name;
             _entity.Campaign = await _context.Campaigns.FirstOrDefaultAsync(p => p.Id == entity.CampaignId);
             _entity.Entity = await _context.Entities.FirstOrDefaultAsync(p => p.Id == entity.EntityId);
             _entity.Faction = (await _context.Locations.Include(p => p.Faction).FirstOrDefaultAsync(p => p.Id == entity.LocationId)).Faction;
