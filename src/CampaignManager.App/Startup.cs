@@ -26,11 +26,15 @@ namespace CampaignManager.App
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<UserDbContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("UserDatabaseConnectionString")));
+            services.AddDbContext<UserDbContext>(options => 
+                options.UseMySql(Configuration.GetConnectionString("UserDatabaseConnectionString"), mySqlOptions => {
+                    mySqlOptions.EnableRetryOnFailure(24);
+                }));
 
             services.AddDbContext<AppDbContext>(options => 
-                options.UseMySql(Configuration.GetConnectionString("AppDatabaseConnectionString")));
+                options.UseMySql(Configuration.GetConnectionString("AppDatabaseConnectionString"), mySqlOptions => {
+                    mySqlOptions.EnableRetryOnFailure(24);
+                }));
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<UserDbContext>();
